@@ -1,0 +1,165 @@
+/*
+ * The look of ХатаВойс: «Лобби». Dark graphite in layers, one accent (mint, also the color of a voice), Manrope, soft
+ * corners. Depth comes from surfaces lying on each other and quiet shadows, never from ornament. Colors come from the
+ * theme (themes.ts writes them over these on <html>), everything else stays the same in every theme.
+ */
+
+:root,
+[data-theme="dark"] {
+  --bg: #0c0e12;
+  --panel: #13161c;
+  --panel-2: #0f1115;
+  --card: #191d25;
+  --hover: #20252f;
+  --border: #242a35;
+  --text: #eef1f6;
+  --text-2: #b4bcca;
+  --muted: #7d8696;
+  --ok: #45e3a2;
+  --warn: #f2c14e;
+  --danger: #ff5c5c;
+  --on-accent: #062b1c;
+  --accent: #45e3a2;
+  --accent-hover: #63ecb5;
+  --shadow: 0 24px 60px rgb(0 0 0 / 50%);
+  --night: 1;
+  color-scheme: dark;
+}
+
+[data-theme="light"] {
+  --bg: #eef0f4;
+  --panel: #f8f9fb;
+  --panel-2: #e6e9ee;
+  --card: #ffffff;
+  --hover: #eceff3;
+  --border: #dde1e8;
+  --text: #161a21;
+  --text-2: #444b58;
+  --muted: #7a8291;
+  --ok: #12925c;
+  --warn: #a8761a;
+  --danger: #d63d3d;
+  --shadow: 0 24px 60px rgb(20 26 40 / 14%);
+  --night: 0;
+  color-scheme: light;
+}
+
+:root {
+  --scale: 100;
+  /* Whoever is on the server gets a color from these, not too loud next to each other. */
+  --av-blue: #5b8def;
+  --av-violet: #8f7cf0;
+  --av-green: #3fbf86;
+  --av-orange: #f0904a;
+  --av-pink: #e46aa0;
+  --av-teal: #36b3b0;
+  --av-red: #e8615a;
+  --av-yellow: #d9ad37;
+
+  --radius: 14px;
+  --radius-sm: 10px;
+  --radius-lg: 18px;
+  --radius-xl: 22px;
+  --gap: 12px;
+  --control: 38px;
+
+  --line: 1px solid var(--border);
+  --quiet: color-mix(in srgb, var(--text) 6%, transparent);
+  --selected: color-mix(in srgb, var(--accent) 14%, transparent);
+  --raised: color-mix(in srgb, var(--card) 70%, var(--hover));
+
+  /* Lines between things: a firm one and a soft one. (The names stay from the plan of 0.7.0.) */
+  --wall: color-mix(in srgb, var(--text) 16%, transparent);
+  --wall-soft: color-mix(in srgb, var(--text) 8%, transparent);
+  --grid: transparent;
+  --lamp: color-mix(in srgb, var(--accent) 22%, transparent);
+  --lamp-soft: color-mix(in srgb, var(--accent) 8%, transparent);
+  --glass: color-mix(in srgb, var(--card) 88%, transparent);
+
+  --top-bar: 52px;
+  /* What a call's panel takes at the bottom: toasts keep above it. */
+  --deck: 86px;
+
+  --font: "Manrope Variable", "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
+  --font-display: "Manrope Variable", "Segoe UI Variable Display", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono Variable", Consolas, "Cascadia Mono", monospace;
+
+  font-family: var(--font);
+  font-size: calc(14px * var(--scale) / 100);
+  font-weight: 500;
+  line-height: 1.45;
+  color: var(--text);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "cv11", "ss01";
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  overflow: hidden;
+  background: var(--bg);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 750;
+  letter-spacing: -0.015em;
+}
+
+p {
+  margin: 0;
+}
+
+code,
+kbd {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+::selection {
+  color: var(--on-accent);
+  background: var(--accent);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--wall) transparent;
+}
+
+/* A quiet caption: a count, a time, what a section is. */
+.label {
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: var(--muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}

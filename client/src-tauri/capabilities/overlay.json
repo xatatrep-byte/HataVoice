@@ -1,0 +1,13 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "overlay",
+  "description": "The windows over other apps (the characters, the remote-control banner): they only hear what is sent to them",
+  "windows": [
+    "overlay",
+    "remote-banner"
+  ],
+  "permissions": [
+    "core:event:allow-listen",
+    "core:event:allow-unlisten"
+  ]
+}

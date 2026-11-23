@@ -1,0 +1,9 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- The app's window is graphite from the first moment: no white flash before the page, light phone theme or dark. -->
+    <style name="Theme.hatavoice" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:windowBackground">@color/hv_window</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@color/hv_window</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+</resources>

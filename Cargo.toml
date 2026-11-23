@@ -1,0 +1,43 @@
+[workspace]
+resolver = "3"
+members = ["client/src-tauri", "server", "crates/hv-host", "crates/hv-roster", "crates/hv-tls", "crates/hv-crypto", "crates/hv-p2p"]
+
+[workspace.package]
+version = "0.28.1"
+edition = "2024"
+license = "MIT OR Apache-2.0"
+
+# See https://tauri.app/concept/size/#cargo-configuration
+[profile.release]
+codegen-units = 1
+lto = true
+opt-level = 3
+panic = "abort"
+strip = true
+
+# Full debug info of every debug build filled the disk (target/debug reached 113 GB): line tables keep file:line in
+# backtraces, and the dependencies carry none.
+[profile.dev]
+debug = "line-tables-only"
+
+[profile.dev.package."*"]
+debug = false
+
+# Key derivation for identity exports is far too slow unoptimized; keep tests quick.
+[profile.dev.package.argon2]
+opt-level = 3
+
+[profile.dev.package.blake2]
+opt-level = 3
+
+# iroh's network watcher (netwatch, and netdev under it) names routing structs and constants that libc declares for
+# macOS only, since the iOS SDK leaves <net/route.h> out: they do not build for iPhones. Copies in third_party/ take
+# those names from themselves (third_party/README.md); drop these once netwatch builds for iOS by itself.
+[patch.crates-io]
+netwatch = { path = "third_party/netwatch-0.19.3" }
+netdev = { path = "third_party/netdev-0.46.3" }
+netdev-045 = { package = "netdev", path = "third_party/netdev-0.45.1" }
+# libcrux-kem 0.0.10 and libcrux-hmac-drbg 0.0.2 fix panics on short hybrid keys and some DRBG lengths (RUSTSEC-2026-0329,
+# -0330, -0331); the newest openmls_libcrux_crypto still pins the old ones. See third_party/README.md.
+hpke-rs-libcrux = { path = "third_party/hpke-rs-libcrux-0.7.0" }
+openmls_libcrux_crypto = { path = "third_party/openmls_libcrux_crypto-0.4.0" }

@@ -1,0 +1,220 @@
+/* Frames around avatars. `--s` is the avatar's size; every frame scales with it. */
+
+.framed {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  /* Ears sit behind the avatar, but in front of whatever the avatar sits on. */
+  isolation: isolate;
+}
+
+.framed .frame-a,
+.framed .frame-b {
+  position: absolute;
+  pointer-events: none;
+}
+
+/* A ring of color around the avatar, cut out of a full disc. */
+.frame-neon .frame-a,
+.frame-rainbow .frame-a,
+.frame-fire .frame-a,
+.frame-pixels .frame-a {
+  inset: calc(var(--s) * -0.1);
+  padding: max(2px, calc(var(--s) * 0.06));
+  border-radius: 50%;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+
+.frame-neon .frame-a {
+  background: conic-gradient(#21f6ff, #ff3df2, #7b5cff, #21f6ff);
+  animation: frame-spin 3.5s linear infinite;
+}
+
+.frame-neon .frame-b {
+  inset: calc(var(--s) * -0.1);
+  border-radius: 50%;
+  box-shadow: 0 0 calc(var(--s) * 0.18) #21f6ff88, 0 0 calc(var(--s) * 0.3) #ff3df255;
+  animation: frame-pulse 2.4s ease-in-out infinite;
+}
+
+.frame-rainbow .frame-a {
+  background: conic-gradient(#ff4d4d, #ffb84d, #f9f871, #4dff88, #4dd2ff, #8a4dff, #ff4dd2, #ff4d4d);
+  animation: frame-spin 4s linear infinite;
+}
+
+.frame-fire .frame-a {
+  background: conic-gradient(from 200deg, #ffcf3f, #ff7a1a, #ff2d1a, #ff7a1a, #ffcf3f, #ff7a1a, #ff2d1a, #ffcf3f);
+  filter: blur(0.5px);
+  animation: frame-spin 2.2s linear infinite reverse;
+}
+
+.frame-fire .frame-b {
+  inset: calc(var(--s) * -0.14);
+  border-radius: 50%;
+  box-shadow: 0 0 calc(var(--s) * 0.2) #ff6a1aaa, 0 calc(var(--s) * -0.08) calc(var(--s) * 0.22) #ffb3407a;
+  animation: frame-flicker 0.9s ease-in-out infinite alternate;
+}
+
+.frame-pixels .frame-a {
+  border-radius: 18%;
+  background: repeating-conic-gradient(var(--accent) 0 25%, color-mix(in srgb, var(--accent) 35%, #000) 0 50%) 0 0 / calc(var(--s) * 0.16) calc(var(--s) * 0.16);
+}
+
+.frame-pixels .avatar {
+  border-radius: 18%;
+}
+
+/* Emoji over the head or around it. */
+.frame-crown .frame-a,
+.frame-snow .frame-a,
+.frame-snow .frame-b,
+.frame-leaves .frame-a,
+.frame-leaves .frame-b {
+  font-size: calc(var(--s) * 0.42);
+  line-height: 1;
+  filter: drop-shadow(0 1px 2px rgb(0 0 0 / 45%));
+}
+
+.frame-crown .frame-a {
+  top: calc(var(--s) * -0.36);
+  left: 50%;
+  transform: translateX(-50%) rotate(-8deg);
+}
+
+.frame-crown .frame-a::before {
+  content: "👑";
+}
+
+.frame-snow .frame-a {
+  top: calc(var(--s) * -0.16);
+  right: calc(var(--s) * -0.18);
+  animation: frame-float 3s ease-in-out infinite;
+}
+
+.frame-snow .frame-b {
+  bottom: calc(var(--s) * -0.12);
+  left: calc(var(--s) * -0.2);
+  font-size: calc(var(--s) * 0.3);
+  animation: frame-float 3.6s ease-in-out infinite reverse;
+}
+
+.frame-snow .frame-a::before,
+.frame-snow .frame-b::before {
+  content: "❄️";
+}
+
+.frame-leaves .frame-a {
+  top: calc(var(--s) * -0.18);
+  left: calc(var(--s) * -0.2);
+  animation: frame-sway 3.2s ease-in-out infinite;
+}
+
+.frame-leaves .frame-b {
+  right: calc(var(--s) * -0.2);
+  bottom: calc(var(--s) * -0.1);
+  animation: frame-sway 3.8s ease-in-out infinite reverse;
+}
+
+.frame-leaves .frame-a::before,
+.frame-leaves .frame-b::before {
+  content: "🍃";
+}
+
+/* A halo of gold above. */
+.frame-halo .frame-a {
+  top: calc(var(--s) * -0.2);
+  left: 15%;
+  width: 70%;
+  height: calc(var(--s) * 0.2);
+  border: max(2px, calc(var(--s) * 0.05)) solid #ffd75e;
+  border-radius: 50%;
+  box-shadow: 0 0 calc(var(--s) * 0.15) #ffd75ecc, inset 0 0 calc(var(--s) * 0.08) #ffd75e99;
+  animation: frame-float 2.8s ease-in-out infinite;
+}
+
+/* Two little red horns, or two ears in the avatar's own color. */
+.frame-horns .frame-a,
+.frame-horns .frame-b,
+.frame-ears .frame-a,
+.frame-ears .frame-b {
+  top: calc(var(--s) * -0.18);
+  width: calc(var(--s) * 0.3);
+  height: calc(var(--s) * 0.34);
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+}
+
+.frame-horns .frame-a,
+.frame-horns .frame-b {
+  background: linear-gradient(#ff5a4a, #b3121f);
+}
+
+.frame-horns .frame-a {
+  left: calc(var(--s) * 0.04);
+  transform: rotate(-22deg);
+}
+
+.frame-horns .frame-b {
+  right: calc(var(--s) * 0.04);
+  transform: rotate(22deg);
+}
+
+.frame-ears .frame-a,
+.frame-ears .frame-b {
+  z-index: -1;
+  background: linear-gradient(#ffb3c8 30%, var(--text-2) 30%);
+}
+
+.frame-ears .frame-a {
+  left: calc(var(--s) * 0.02);
+  transform: rotate(-18deg);
+}
+
+.frame-ears .frame-b {
+  right: calc(var(--s) * 0.02);
+  transform: rotate(18deg);
+}
+
+@keyframes frame-spin {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+@keyframes frame-pulse {
+  50% {
+    opacity: 0.55;
+  }
+}
+
+@keyframes frame-flicker {
+  from {
+    opacity: 0.7;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1.03);
+  }
+}
+
+@keyframes frame-float {
+  50% {
+    transform: translateY(calc(var(--s) * -0.05));
+  }
+}
+
+@keyframes frame-sway {
+  50% {
+    transform: rotate(14deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .framed .frame-a,
+  .framed .frame-b {
+    animation: none !important;
+  }
+}

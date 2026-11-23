@@ -1,0 +1,16 @@
+[package]
+name = "hv-tls"
+description = "TLS 1.3 for HataVoice: a certificate issued by the server key and the client's pinned check of it"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+hv-roster = { path = "../hv-roster" }
+rcgen = { version = "0.14", default-features = false, features = ["aws_lc_rs"] }
+rustls = "0.23"
+rustls-webpki = { version = "0.103", features = ["aws-lc-rs"] }
+
+[dev-dependencies]
+tokio = { version = "1.54.1", features = ["rt", "macros", "net", "io-util"] }
+tokio-rustls = "0.26"

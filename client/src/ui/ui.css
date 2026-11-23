@@ -1,0 +1,884 @@
+/* The parts everything is built from. */
+
+/* ---------------------------------------------------------------- Buttons */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: var(--control);
+  padding: 0 16px;
+  font: inherit;
+  font-weight: 650;
+  color: var(--text);
+  white-space: nowrap;
+  background: var(--hover);
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background 120ms, border-color 120ms, color 120ms, transform 80ms;
+}
+
+.btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.btn:disabled {
+  color: var(--muted);
+  cursor: default;
+  opacity: 0.6;
+}
+
+.btn-primary {
+  font-weight: 700;
+  color: var(--on-accent);
+  background: var(--accent);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--accent-hover);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--hover) 70%, var(--text) 8%);
+}
+
+.btn-ghost {
+  color: var(--text-2);
+  background: transparent;
+}
+
+.btn-ghost:hover:not(:disabled) {
+  color: var(--text);
+  background: var(--quiet);
+}
+
+.btn-danger {
+  color: var(--danger);
+  background: color-mix(in srgb, var(--danger) 13%, transparent);
+}
+
+.btn-danger:hover:not(:disabled) {
+  color: #fff;
+  background: var(--danger);
+}
+
+.icon-btn {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--control);
+  height: var(--control);
+  padding: 0;
+  color: var(--text-2);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background 120ms, color 120ms;
+}
+
+.icon-btn:hover:not(:disabled) {
+  color: var(--text);
+  background: var(--quiet);
+}
+
+.icon-btn.active {
+  color: var(--accent);
+  background: var(--selected);
+}
+
+.icon-btn.off {
+  color: var(--danger);
+}
+
+.icon-btn.danger {
+  color: #fff;
+  background: var(--danger);
+}
+
+.icon-btn:disabled {
+  color: var(--muted);
+  cursor: default;
+  opacity: 0.55;
+}
+
+.icon-btn svg,
+.btn svg {
+  stroke-width: 1.9;
+}
+
+.icon-btn-caption {
+  display: none;
+}
+
+.link-button {
+  padding: 0;
+  font: inherit;
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* Buttons side by side, apart, wrapping in a narrow window. Settings, the avatar chooser and the pad and remote-control
+   strips use it; it was lost once with the old shell and the buttons stuck together. */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ---------------------------------------------------------------- Fields */
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 18px;
+}
+
+.field-label {
+  font-size: 0.93em;
+  font-weight: 650;
+  color: var(--text);
+}
+
+.field-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.field-value {
+  font-size: 0.9em;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-2);
+}
+
+.field-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+/* A note under a control: what it changes, when that is not obvious. */
+.hint {
+  font-size: 0.9em;
+  line-height: 1.45;
+  color: var(--muted);
+}
+
+.form-error {
+  margin: 0 0 12px;
+  font-size: 0.93em;
+  color: var(--danger);
+}
+
+.input,
+.select,
+textarea.input {
+  width: 100%;
+  min-height: var(--control);
+  padding: 0 12px;
+  font: inherit;
+  color: var(--text);
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  outline: none;
+  transition: border-color 120ms, box-shadow 120ms;
+}
+
+textarea.input {
+  padding: 9px 12px;
+  resize: vertical;
+}
+
+.input::placeholder {
+  color: var(--muted);
+}
+
+.input:hover,
+.select:hover {
+  border-color: var(--wall);
+}
+
+.input:focus,
+.select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--selected);
+}
+
+.select {
+  appearance: none;
+  padding-right: 28px;
+  background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%), linear-gradient(135deg, var(--muted) 50%, transparent 50%);
+  background-repeat: no-repeat;
+  background-position: calc(100% - 15px) 50%, calc(100% - 10px) 50%;
+  background-size: 5px 5px;
+}
+
+.toggle-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 9px 0;
+  cursor: pointer;
+}
+
+.toggle-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.toggle-label {
+  font-weight: 650;
+}
+
+.toggle {
+  position: relative;
+  flex: none;
+  width: 40px;
+  height: 24px;
+  margin-top: 1px;
+  padding: 0;
+  background: var(--hover);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 140ms, border-color 140ms;
+}
+
+.toggle[aria-checked="true"] {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.toggle-knob {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 16px;
+  height: 16px;
+  background: var(--text-2);
+  border-radius: 50%;
+  transition: transform 140ms cubic-bezier(0.3, 1.4, 0.6, 1), background 140ms;
+}
+
+.toggle[aria-checked="true"] .toggle-knob {
+  background: var(--on-accent);
+  transform: translateX(16px);
+}
+
+.range {
+  width: 100%;
+  height: 22px;
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+  appearance: none;
+}
+
+.range::-webkit-slider-runnable-track {
+  height: 4px;
+  background: var(--wall-soft);
+  border-radius: 999px;
+}
+
+.range::-webkit-slider-thumb {
+  width: 16px;
+  height: 16px;
+  margin-top: -6px;
+  background: var(--text);
+  border: 3px solid var(--panel);
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px var(--wall);
+  appearance: none;
+  transition: background 120ms, transform 80ms;
+}
+
+.range:hover::-webkit-slider-thumb,
+.range:focus-visible::-webkit-slider-thumb {
+  background: var(--accent);
+  transform: scale(1.12);
+}
+
+.range:focus-visible {
+  outline: none;
+}
+
+.range:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
+.segmented {
+  display: flex;
+  gap: 2px;
+  padding: 3px;
+  overflow: hidden;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+
+.segment {
+  flex: 1;
+  min-height: calc(var(--control) - 8px);
+  padding: 0 10px;
+  font: inherit;
+  font-weight: 650;
+  color: var(--muted);
+  white-space: nowrap;
+  background: transparent;
+  border: none;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: background 120ms, color 120ms;
+}
+
+.segment:hover:not(:disabled):not(.active) {
+  color: var(--text);
+  background: var(--quiet);
+}
+
+.segment.active {
+  color: var(--text);
+  background: var(--hover);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--text) 6%, transparent), 0 1px 2px rgb(0 0 0 / 25%);
+}
+
+.segment:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+/* A choice marked for this PC: a dot after its name, green where it is the one to take, red where it would go badly. */
+.segment.tone-good::after,
+.segment.tone-bad::after {
+  content: "";
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-left: 7px;
+  vertical-align: 1px;
+  border-radius: 50%;
+}
+
+.segment.tone-good::after {
+  background: var(--ok);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ok) 22%, transparent);
+}
+
+.segment.tone-bad::after {
+  background: var(--danger);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--danger) 22%, transparent);
+}
+
+.segment.tone-good:not(.active) {
+  color: color-mix(in srgb, var(--ok) 70%, var(--text));
+}
+
+.segment.tone-bad:not(.active) {
+  color: color-mix(in srgb, var(--danger) 55%, var(--muted));
+}
+
+.swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.swatch {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: 50%;
+  outline: 2px solid transparent;
+  outline-offset: 1px;
+  cursor: pointer;
+  transition: transform 80ms;
+}
+
+.swatch:hover {
+  transform: scale(1.1);
+}
+
+.swatch[aria-checked="true"] {
+  outline-color: var(--text);
+}
+
+.meter {
+  position: relative;
+  height: 6px;
+  overflow: hidden;
+  background: var(--wall-soft);
+  border-radius: 999px;
+}
+
+.meter-fill {
+  height: 100%;
+  background: var(--muted);
+  border-radius: 999px;
+  transition: width 50ms linear;
+}
+
+.meter-fill.open {
+  background: var(--ok);
+}
+
+.meter-marker {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 1;
+  width: 2px;
+  background: var(--text);
+}
+
+/* ---------------------------------------------------------------- Windows */
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: color-mix(in srgb, var(--bg) 70%, transparent);
+  backdrop-filter: blur(8px);
+  animation: fade-in 120ms ease-out;
+}
+
+.modal {
+  display: flex;
+  flex-direction: column;
+  width: min(480px, 100%);
+  max-height: 100%;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow);
+  animation: rise-in 180ms cubic-bezier(0.2, 0.9, 0.3, 1);
+}
+
+/* A big one is a page of its own over the plan: settings, the server. */
+.modal.wide {
+  width: min(1120px, 100%);
+  height: 100%;
+}
+
+.modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 62px;
+  padding: 0 12px 0 24px;
+}
+
+.modal-head h2 {
+  font-family: var(--font-display);
+  font-size: 1.22em;
+  font-weight: 800;
+}
+
+.modal-body {
+  flex: 1;
+  min-height: 0;
+  padding: 2px 24px 24px;
+  overflow-y: auto;
+}
+
+.modal.wide .modal-body {
+  padding: 0;
+  overflow: hidden;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.card {
+  width: 100%;
+  padding: 18px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+
+.avatar {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 750;
+  color: #fff;
+  border-radius: 50%;
+  user-select: none;
+  box-shadow: 0 0 0 0 var(--ok);
+  transition: box-shadow 70ms linear;
+}
+
+.avatar.pictured {
+  overflow: hidden;
+}
+
+.avatar-picture {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 12%;
+  transform: scale(1.15);
+  transform-origin: 50% 25%;
+  pointer-events: none;
+  user-select: none;
+}
+
+.avatar.speaking {
+  box-shadow: 0 0 0 calc(2px + var(--level, 0) * 4px) var(--ok), 0 0 calc(10px + var(--level, 0) * 22px) color-mix(in srgb, var(--ok) 55%, transparent);
+}
+
+.toaster {
+  position: fixed;
+  right: 14px;
+  bottom: calc(var(--deck) + 12px);
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: min(380px, calc(100vw - 28px));
+}
+
+.toast {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 12px 8px 12px 16px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  animation: rise-in 180ms cubic-bezier(0.2, 0.9, 0.3, 1);
+}
+
+.toast.error {
+  border-color: color-mix(in srgb, var(--danger) 55%, transparent);
+}
+
+.toast-text {
+  flex: 1;
+  padding-top: 1px;
+  line-height: 1.4;
+}
+
+.toast .icon-btn {
+  width: 24px;
+  height: 24px;
+}
+
+.plain-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.plain-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.plain-row:last-child {
+  border-bottom: none;
+}
+
+.plain-main {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+  cursor: pointer;
+}
+
+.check input {
+  width: 15px;
+  height: 15px;
+  margin: 0;
+  accent-color: var(--accent);
+}
+
+.secret {
+  color: var(--muted);
+  font-style: italic;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.985);
+  }
+}
+
+/* ---------------------------------------------------------------- Tabs over a page */
+
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  margin-bottom: 18px;
+  border-bottom: 1px solid var(--border);
+}
+
+.tab {
+  position: relative;
+  min-height: 40px;
+  padding: 0 12px;
+  font: inherit;
+  font-weight: 650;
+  color: var(--muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 120ms;
+}
+
+.tab:hover {
+  color: var(--text);
+}
+
+.tab[aria-selected="true"] {
+  color: var(--text);
+}
+
+.tab[aria-selected="true"]::after {
+  position: absolute;
+  right: 12px;
+  bottom: -1px;
+  left: 12px;
+  height: 2px;
+  content: "";
+  background: var(--accent);
+  border-radius: 2px 2px 0 0;
+}
+
+/* Creating a server: its rooms, as a list to edit. */
+.create-rooms {
+  margin: 0 0 14px;
+  padding: 0;
+  border: none;
+}
+
+.create-rooms .hint {
+  margin: 0 0 8px;
+}
+
+.create-room-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0 0 6px;
+  padding: 0;
+  list-style: none;
+}
+
+.create-room-list li,
+.create-room-add {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.create-room-list .input,
+.create-room-add .input {
+  flex: 1;
+  min-width: 0;
+}
+
+.create-room-add {
+  gap: 6px;
+}
+
+.create-advanced {
+  margin: 4px 0 8px;
+}
+
+.create-ports {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.hint.warn {
+  color: var(--warn);
+}
+
+/* A field's label with something beside it: the «i» of an explanation. */
+.field-label-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.infotip {
+  position: relative;
+  display: inline-flex;
+}
+
+.infotip-button {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  color: var(--muted);
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: color 120ms, border-color 120ms, background 120ms;
+}
+
+/* A bigger target than it looks: the pointer need not land on the circle itself. */
+.infotip-button::before {
+  position: absolute;
+  inset: -8px;
+  content: "";
+  border-radius: 50%;
+}
+
+.infotip-button.pinned {
+  color: var(--on-accent);
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.infotip-button:hover,
+.infotip-button[aria-expanded="true"] {
+  color: var(--accent);
+  border-color: color-mix(in oklab, var(--accent) 55%, var(--border));
+  background: color-mix(in oklab, var(--accent) 10%, transparent);
+}
+
+.infotip-card {
+  z-index: 1000;
+  width: min(420px, calc(100vw - 48px));
+  padding: 14px 16px;
+  font-size: 0.9em;
+  font-weight: 450;
+  line-height: 1.5;
+  color: var(--text);
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  animation: infotip-in 120ms ease-out;
+}
+
+@keyframes infotip-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+.infotip-card p {
+  margin: 0 0 10px;
+}
+
+.infotip-card p:last-child {
+  margin-bottom: 0;
+}
+
+.infotip-card dl {
+  display: grid;
+  gap: 10px;
+  margin: 0 0 12px;
+}
+
+.infotip-card dt {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+}
+
+.infotip-card dd {
+  margin: 2px 0 0;
+  color: color-mix(in oklab, var(--text) 78%, var(--muted));
+}
+
+.infotip-badge {
+  padding: 1px 7px;
+  font-size: 0.78em;
+  font-weight: 700;
+  color: var(--on-accent);
+  background: var(--accent);
+  border-radius: 999px;
+}
+
+.infotip-table {
+  width: 100%;
+  margin-top: 4px;
+  font-size: 0.92em;
+  border-collapse: collapse;
+}
+
+.infotip-table th,
+.infotip-table td {
+  padding: 5px 6px;
+  text-align: left;
+  border-top: 1px solid var(--border);
+}
+
+.infotip-table th {
+  font-weight: 650;
+  color: var(--muted);
+}
+
+.infotip-table td.good {
+  color: var(--ok);
+}
+
+.infotip-table td.bad {
+  color: var(--warn);
+}

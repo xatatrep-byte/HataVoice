@@ -1,0 +1,126 @@
+/* The characters on the desktop: see-through, nothing but the characters, and while they are being put in place, their
+   frames and a small panel. */
+html.overlay,
+html.overlay body,
+html.overlay #root {
+  overflow: hidden;
+  background: transparent !important;
+}
+
+/* The window takes the mouse only over a character: there it may be clicked or carried. */
+.overlay-canvas {
+  position: fixed;
+  inset: 0;
+  display: block;
+  width: 100vw;
+  height: 100vh;
+  cursor: pointer;
+}
+
+.overlay-arrange {
+  position: fixed;
+  inset: 0;
+  background: rgb(6 8 12 / 38%);
+  animation: fade-in 160ms ease-out;
+}
+
+.overlay-handle {
+  position: absolute;
+  border: 2px dashed color-mix(in srgb, var(--accent) 85%, transparent);
+  border-radius: 18px;
+  background: color-mix(in srgb, var(--accent) 7%, transparent);
+  cursor: grab;
+  transition: background 120ms, border-color 120ms;
+  touch-action: none;
+}
+
+.overlay-handle:hover {
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+}
+
+.overlay-handle.held {
+  cursor: grabbing;
+  border-style: solid;
+}
+
+.overlay-handle-grip {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  color: var(--on-accent);
+  background: var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 6px 16px rgb(0 0 0 / 40%);
+  transform: translateX(-50%);
+}
+
+.overlay-panel {
+  position: fixed;
+  top: 24px;
+  left: 50%;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 12px 12px 20px;
+  color: var(--text);
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  box-shadow: 0 24px 60px rgb(0 0 0 / 55%);
+  transform: translateX(-50%);
+  animation: rise-in 180ms cubic-bezier(0.2, 0.9, 0.3, 1);
+}
+
+.overlay-panel-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.overlay-panel-text b {
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.overlay-panel-text span {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.overlay-size {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-2);
+}
+
+.overlay-size .range {
+  width: 150px;
+}
+
+.overlay-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 40px;
+  padding: 0 16px;
+  font: inherit;
+  font-weight: 700;
+  color: var(--text);
+  background: var(--hover);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.overlay-button.primary {
+  color: var(--on-accent);
+  background: var(--accent);
+}

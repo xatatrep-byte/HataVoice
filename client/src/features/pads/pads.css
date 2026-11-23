@@ -1,0 +1,248 @@
+.pad-actions {
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+/* Friends play on our PC with pads: a strip at the top, with a way to stop each. */
+.pad-players {
+  position: fixed;
+  top: var(--top-bar);
+  left: 50%;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 34px;
+  padding: 0 4px 0 12px;
+  color: var(--text);
+  white-space: nowrap;
+  background: var(--card);
+  border: 1px solid var(--wall-soft);
+  border-top: none;
+  border-bottom: 2px solid var(--accent);
+  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+  transform: translateX(-50%);
+}
+
+.pad-players.lower {
+  top: calc(var(--top-bar) + 38px);
+}
+
+.pad-player {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.screen-tile.playing {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+.screen-tile.playing:focus-visible {
+  outline-width: 3px;
+}
+
+/* A game pad on the phone's screen, over the friend's picture: the stick and the cross on the left, A B X Y on the
+   right, shoulders and triggers on top. Big targets for thumbs, see-through so the game stays in sight. */
+.touch-pad {
+  position: absolute;
+  inset: auto 0 52px;
+  z-index: 3;
+  display: grid;
+  grid-template: "top top" auto "left right" auto / minmax(0, 1fr) auto;
+  gap: 10px;
+  padding: 8px 12px;
+  pointer-events: none;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.touch-pad-top {
+  display: flex;
+  grid-area: top;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.touch-pad-left {
+  display: flex;
+  grid-area: left;
+  align-items: flex-end;
+  gap: 14px;
+}
+
+.touch-pad-right {
+  position: relative;
+  grid-area: right;
+  justify-self: end;
+  width: 156px;
+  height: 156px;
+}
+
+.pad-key {
+  display: grid;
+  place-items: center;
+  font: inherit;
+  font-weight: 800;
+  color: #fff;
+  pointer-events: auto;
+  touch-action: none;
+  background: rgb(20 22 28 / 0.42);
+  border: 1px solid rgb(255 255 255 / 0.28);
+  border-radius: 12px;
+  backdrop-filter: blur(4px);
+}
+
+.pad-key:active {
+  background: color-mix(in srgb, var(--accent) 55%, transparent);
+}
+
+.pad-shoulder {
+  min-width: 56px;
+  height: 40px;
+  font-size: 13px;
+}
+
+.pad-small {
+  width: 44px;
+  height: 36px;
+  font-size: 16px;
+  border-radius: 18px;
+}
+
+.pad-face {
+  position: absolute;
+  width: 54px;
+  height: 54px;
+  font-size: 18px;
+  border-radius: 50%;
+}
+
+.pad-y { top: 0; left: 51px; }
+.pad-x { top: 51px; left: 0; }
+.pad-b { top: 51px; right: 0; }
+.pad-a { bottom: 0; left: 51px; }
+
+.pad-stick {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 128px;
+  height: 128px;
+  pointer-events: auto;
+  touch-action: none;
+  background: rgb(20 22 28 / 0.32);
+  border: 1px solid rgb(255 255 255 / 0.24);
+  border-radius: 50%;
+}
+
+.pad-knob {
+  width: 56px;
+  height: 56px;
+  background: rgb(255 255 255 / 0.55);
+  border-radius: 50%;
+  box-shadow: 0 2px 10px rgb(0 0 0 / 0.35);
+}
+
+.pad-cross {
+  position: relative;
+  width: 108px;
+  height: 108px;
+}
+
+.pad-cross .pad-key {
+  position: absolute;
+  width: 38px;
+  height: 38px;
+  border-radius: 9px;
+}
+
+.pad-up { top: 0; left: 35px; }
+.pad-left { top: 35px; left: 0; }
+.pad-right { top: 35px; right: 0; }
+.pad-down { bottom: 0; left: 35px; }
+
+.pad-up::after,
+.pad-left::after,
+.pad-right::after,
+.pad-down::after {
+  width: 0;
+  height: 0;
+  content: "";
+  border: 7px solid transparent;
+}
+
+.pad-up::after { border-bottom-color: #fff; transform: translateY(-3px); }
+.pad-down::after { border-top-color: #fff; transform: translateY(3px); }
+.pad-left::after { border-right-color: #fff; transform: translateX(-3px); }
+.pad-right::after { border-left-color: #fff; transform: translateX(3px); }
+
+/* A phone held upright: everything a little smaller, so the stick, the cross and A B X Y fit side by side. */
+@media (max-width: 480px) {
+  .touch-pad {
+    gap: 8px;
+    padding: 6px 8px;
+  }
+
+  .touch-pad-left {
+    gap: 8px;
+  }
+
+  .pad-stick {
+    width: 104px;
+    height: 104px;
+  }
+
+  .pad-knob {
+    width: 46px;
+    height: 46px;
+  }
+
+  .pad-cross {
+    width: 90px;
+    height: 90px;
+  }
+
+  .pad-cross .pad-key {
+    width: 32px;
+    height: 32px;
+  }
+
+  .pad-up,
+  .pad-down {
+    left: 29px;
+  }
+
+  .pad-left,
+  .pad-right {
+    top: 29px;
+  }
+
+  .touch-pad-right {
+    width: 124px;
+    height: 124px;
+  }
+
+  .pad-face {
+    width: 44px;
+    height: 44px;
+    font-size: 16px;
+  }
+
+  .pad-y,
+  .pad-a {
+    left: 40px;
+  }
+
+  .pad-x,
+  .pad-b {
+    top: 40px;
+  }
+
+  .pad-shoulder {
+    min-width: 46px;
+  }
+}

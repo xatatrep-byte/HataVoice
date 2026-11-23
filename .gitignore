@@ -1,0 +1,13 @@
+/target/
+node_modules/
+dist/
+*.log
+.env
+/vendor/
+/.superpowers/
+/client/src-tauri/binaries/
+/client/src-tauri/update/
+
+/client/public/avatars-raw/
+/.tools/
+/tools/icon/out/

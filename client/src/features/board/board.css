@@ -1,0 +1,368 @@
+/* The call's drawing board: the paper whole in its box, the tools down its left, who leads above. */
+
+.board {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  /* Below the call's header and the stage's tabs, which float over the stage. */
+  padding-top: 104px;
+  color: var(--text);
+  background: var(--panel-2);
+}
+
+/* The people's chips would lie over the paper: the board is in front, they wait. */
+.stage:has(.board) .stage-grid.strip {
+  display: none;
+}
+
+.board-head {
+  display: flex;
+  border-top: 1px solid var(--border);
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 6px 10px 6px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.board-who {
+  min-width: 0;
+  overflow: hidden;
+  font-size: 13px;
+  color: var(--text-2);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.board-spacer {
+  flex: 1;
+}
+
+.board-rights-anchor {
+  position: relative;
+}
+
+.board-rights {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 8;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 260px;
+  max-height: 60vh;
+  padding: 12px;
+  overflow-y: auto;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.board-rights .hint {
+  margin: 4px 0 0;
+}
+
+.board-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.board-body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+.board-tools {
+  display: grid;
+  flex: none;
+  grid-template-columns: repeat(2, 36px);
+  align-content: start;
+  justify-items: center;
+  gap: 4px;
+  padding: 8px 8px 90px;
+  overflow-y: auto;
+  border-right: 1px solid var(--border);
+}
+
+.board-tool,
+.board-size {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  color: var(--text-2);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.board-tool:hover,
+.board-size:hover {
+  color: var(--text);
+  background: var(--hover);
+}
+
+.board-tool[aria-pressed="true"],
+.board-size[aria-pressed="true"] {
+  color: var(--on-accent);
+  background: var(--accent);
+}
+
+.board-tool.danger:hover {
+  color: var(--danger);
+}
+
+.board-size i {
+  display: block;
+  background: currentColor;
+  border-radius: 50%;
+}
+
+.board-color {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  background: var(--swatch);
+  border: 2px solid var(--border);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.board-color[aria-pressed="true"] {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.board-sep {
+  grid-column: 1 / -1;
+  width: 100%;
+  height: 1px;
+  margin: 4px 0;
+  background: var(--border);
+}
+
+.board-stage {
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  padding: 12px 12px 96px;
+}
+
+.board-fit {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 0;
+}
+
+.board-paper {
+  position: relative;
+  flex: none;
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgb(0 0 0 / 30%);
+}
+
+.board-canvas {
+  display: block;
+  touch-action: none;
+  cursor: crosshair;
+}
+
+.board-canvas.tool-view {
+  cursor: default;
+}
+
+.board-canvas.tool-text {
+  cursor: text;
+}
+
+.board-typing {
+  position: absolute;
+  min-width: 160px;
+  padding: 0;
+  font-family: Manrope, "Segoe UI", sans-serif;
+  font-weight: 600;
+  line-height: 1.2;
+  background: rgb(255 255 255 / 85%);
+  border: 1px dashed var(--accent);
+  outline: none;
+  resize: none;
+}
+
+.board-note {
+  position: absolute;
+  top: 18px;
+  left: 50%;
+  margin: 0;
+  padding: 6px 12px;
+  font-size: 13px;
+  color: var(--text);
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  transform: translateX(-50%);
+}
+
+.board-confirm {
+  position: absolute;
+  top: 60px;
+  left: 50%;
+  z-index: 9;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  transform: translateX(-50%);
+}
+
+.board-help {
+  position: absolute;
+  top: 60px;
+  right: 16px;
+  z-index: 9;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 280px;
+  padding: 14px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.board-help ul {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  font-size: 13px;
+  list-style: none;
+}
+
+.board-help kbd {
+  display: inline-block;
+  min-width: 18px;
+  padding: 1px 5px;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+  background: var(--hover);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+}
+
+/* A phone: the tools along the bottom, under the paper. */
+@media (max-width: 700px) {
+  .board-body {
+    flex-direction: column-reverse;
+  }
+
+  .board-tools {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 6px 8px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    border-top: 1px solid var(--border);
+    border-right: none;
+  }
+
+  .board-sep {
+    width: 1px;
+    height: 24px;
+    margin: 0 4px;
+  }
+
+  .board-stage {
+    padding: 8px;
+  }
+}
+
+/* The eraser's three kinds, under the tools while it is chosen. */
+.board-erasers {
+  display: flex;
+  grid-column: 1 / -1;
+  justify-content: center;
+  gap: 2px;
+  padding: 2px;
+  background: var(--hover);
+  border-radius: 10px;
+}
+
+.board-eraser {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  color: var(--text-2);
+  background: transparent;
+  border: none;
+  border-radius: 7px;
+  cursor: pointer;
+}
+
+.board-eraser[aria-pressed="true"] {
+  color: var(--on-accent);
+  background: var(--accent);
+}
+
+.board-canvas.tool-eraser-rub {
+  cursor: none;
+}
+
+.board-canvas.tool-eraser-whole {
+  cursor: pointer;
+}
+
+.board-canvas.tool-eraser-area {
+  cursor: crosshair;
+}
+
+/* Where the rubbing eraser rubs: a ring the size of it, over the pointer. */
+.board-ring {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 0;
+  pointer-events: none;
+  border: 1.5px solid rgb(0 0 0 / 55%);
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px rgb(255 255 255 / 80%);
+  opacity: 0;
+  translate: -50% -50%;
+}
+
+.board-area {
+  position: absolute;
+  pointer-events: none;
+  background: rgb(225 29 72 / 8%);
+  border: 1.5px dashed #e11d48;
+}

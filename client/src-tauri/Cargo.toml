@@ -1,0 +1,107 @@
+[package]
+name = "hatavoice"
+description = "HataVoice desktop client"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[lib]
+# The `_lib` suffix keeps the lib name distinct from the bin name on Windows,
+# see https://github.com/rust-lang/cargo/issues/8519
+name = "hatavoice_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+# macos-private-api: a see-through window on a Mac (the desktop characters); it compiles to nothing elsewhere.
+# unstable: a second webview inside the main window (a site watched together, right in the call).
+tauri = { version = "2", features = ["macos-private-api", "unstable"] }
+tauri-plugin-opener = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+url = "2.5.8"
+reqwest = { version = "0.13.5", default-features = false, features = ["json", "rustls"] }
+hv-host = { path = "../../crates/hv-host" }
+tokio = { version = "1.54.1", features = ["rt", "time", "sync", "macros", "net", "io-util"] }
+axum = { version = "0.8.9", features = ["ws"] }
+percent-encoding = "2"
+tokio-tungstenite = { version = "0.29", features = ["rustls-tls-webpki-roots"] }
+futures-util = "0.3.34"
+argon2 = "0.6.0"
+chacha20poly1305 = "0.11.0"
+x25519-dalek = { version = "2.0.1", features = ["static_secrets"] }
+hkdf = "0.13.0"
+sha2 = "0.11.1"
+hv-roster = { path = "../../crates/hv-roster" }
+hv-tls = { path = "../../crates/hv-tls" }
+hv-p2p = { path = "../../crates/hv-p2p" }
+hv-crypto = { path = "../../crates/hv-crypto" }
+rustls = "0.23"
+tokio-rustls = "0.26"
+webpki-roots = "1"
+tauri-plugin-dialog = "2"
+tauri-plugin-deep-link = "2"
+tauri-plugin-notification = "~2.7"
+# Small pictures and icons for our own screen picker (both already built for Tauri).
+png = "0.18"
+base64 = "0.22"
+
+[target.'cfg(windows)'.dependencies]
+# Same major as Tauri's own `windows` dependency, so only one copy is compiled.
+windows = { version = "0.62", features = [
+  "Foundation",
+  "Graphics_Capture",
+  "Media_Control",
+  "Storage_Streams",
+  "Graphics_DirectX_Direct3D11",
+  "Win32_Foundation",
+  "Win32_Graphics_Direct3D",
+  "Win32_Graphics_Direct3D11",
+  "Win32_Graphics_Dxgi",
+  "Win32_Graphics_Dxgi_Common",
+  "Win32_Graphics_Dwm",
+  "Win32_Graphics_Gdi",
+  "Win32_Media_Audio",
+  "Win32_Media_Audio_Endpoints",
+  "Win32_NetworkManagement_IpHelper",
+  "Win32_NetworkManagement_Ndis",
+  "Win32_Networking_WinSock",
+  "Win32_Security",
+  "Win32_Storage_FileSystem",
+  "Win32_Storage_Xps",
+  "Win32_System_Com",
+  "Win32_System_Com_StructuredStorage",
+  "Win32_System_Variant",
+  "Win32_System_Threading",
+  "Win32_System_WinRT_Direct3D11",
+  "Win32_System_WinRT_Graphics_Capture",
+  "Win32_System_Diagnostics_ToolHelp",
+  "Win32_System_LibraryLoader",
+  "Win32_System_SystemInformation",
+  "Win32_UI_Input_KeyboardAndMouse",
+  "Win32_UI_Shell",
+  "Win32_UI_WindowsAndMessaging",
+] }
+# The window's WebView2, for the shared buffer our own screen capture hands frames through (same version as Tauri's).
+webview2-com = "0.39"
+# `#[implement]` (the sound capture's completion handler) names this crate; the same copy `windows` uses.
+windows-core = "0.62"
+# Virtual Xbox 360 pads for friends who play on this PC (needs the ViGEmBus driver, which the owner installs).
+vigem-client = "0.1.4"
+
+# Android hands picked files over as content:// addresses: this plugin opens them (only from Rust, the page has no right).
+[target.'cfg(target_os = "android")'.dependencies]
+tauri-plugin-fs = "2"
+# The phone's screen frames are made I420 in Rust (`i420.rs`), called from Kotlin: the same copy Tauri already builds.
+jni = "0.21"
+
+[target.'cfg(any(target_os = "macos", windows, target_os = "linux"))'.dependencies]
+tauri-plugin-single-instance = { version = "2", features = ["deep-link"] }
+arboard = { version = "3", default-features = false }
+
+[dev-dependencies]
+hatavoice-server = { path = "../../server", features = ["testing"] }
+livekit-api = { version = "0.9.1", default-features = false, features = ["access-token"] }
+tokio = { version = "1.54.1", features = ["rt", "macros", "rt-multi-thread", "net", "io-util"] }

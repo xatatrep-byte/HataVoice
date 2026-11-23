@@ -1,0 +1,155 @@
+# Builds HataVoice for every system. Windows, Linux and Android are built on the owner's PC too (scripts/build-installer.ps1,
+# packaging/linux, packaging/android); macOS and iOS can only be built on a Mac, which is what this is for.
+#
+# macOS and iOS need these secrets to be installable without a warning:
+#   APPLE_CERTIFICATE, APPLE_CERTIFICATE_PASSWORD, APPLE_SIGNING_IDENTITY, APPLE_ID, APPLE_PASSWORD, APPLE_TEAM_ID
+# Without them macOS still gets a .dmg with an ad-hoc signature (right click → «Открыть» the first time), and iOS gets an
+# unsigned .ipa: AltStore or Sideloadly sign it with a free Apple ID on the way to the iPhone (for 7 days at a time).
+# With the variable APPLE_TEAM_ID set (a paid developer account), iOS is signed by Tauri as usual.
+#
+# Before a run, `packaging/apple-check` checks on any PC that all of our Rust compiles for these systems.
+name: build
+
+on:
+  workflow_dispatch:
+  push:
+    tags: ["v*"]
+
+env:
+  LIVEKIT_VERSION: "1.13.10"
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install -g pnpm@12.15.0
+      - run: powershell -ExecutionPolicy Bypass -File scripts/build-installer.ps1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows
+          path: target/release/bundle/nsis/*-setup.exe
+
+  linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t hv-linux-build packaging/linux
+      - run: docker run --rm -v "$PWD:/src:ro" -v "$PWD/dist:/out" -e APPIMAGE_EXTRACT_AND_RUN=1 -e NO_STRIP=1 hv-linux-build bash /src/packaging/linux/build.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: linux
+          path: dist/*
+
+  android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t hv-android-build packaging/android
+      # The signing key is the owner's: put it into the secret ANDROID_KEYSTORE (base64), or each build gets a new one
+      # and Android refuses to install it over the previous.
+      - run: mkdir -p keys && [ -z "$ANDROID_KEYSTORE" ] || echo "$ANDROID_KEYSTORE" | base64 -d > keys/hatavoice.jks
+        env:
+          ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE }}
+      - run: docker run --rm -v "$PWD:/src:ro" -v "$PWD/dist:/out" -v "$PWD/keys:/keys" hv-android-build bash /src/packaging/android/build.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: android
+          path: dist/*.apk
+
+  macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-apple-darwin,x86_64-apple-darwin
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: actions/setup-go@v5
+        with:
+          go-version: stable
+      - run: npm install -g pnpm@12.15.0
+      # One .dmg for both kinds of Mac: every binary is built for Apple Silicon and for Intel, then glued with lipo.
+      # LiveKit publishes no binary for macOS: built from its own source, at the tag this program is tested with.
+      - name: Server and LiveKit, for both kinds of Mac
+        run: |
+          set -e
+          mkdir -p client/src-tauri/binaries
+          for triple in aarch64-apple-darwin x86_64-apple-darwin; do
+            cargo build --release -p hatavoice-server --target "$triple"
+          done
+          lipo -create -output client/src-tauri/binaries/hatavoice-server-universal-apple-darwin \
+            target/aarch64-apple-darwin/release/hatavoice-server target/x86_64-apple-darwin/release/hatavoice-server
+          git clone --depth 1 -b "v$LIVEKIT_VERSION" https://github.com/livekit/livekit /tmp/livekit
+          (cd /tmp/livekit && GOARCH=arm64 go build -o /tmp/livekit-arm64 ./cmd/server && GOARCH=amd64 go build -o /tmp/livekit-amd64 ./cmd/server)
+          lipo -create -output client/src-tauri/binaries/livekit-server-universal-apple-darwin /tmp/livekit-arm64 /tmp/livekit-amd64
+      - name: The app
+        working-directory: client
+        env:
+          APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
+          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+          # «-» is an ad-hoc signature: no certificate needed, and macOS still runs the app after «Открыть».
+          APPLE_SIGNING_IDENTITY: ${{ secrets.APPLE_SIGNING_IDENTITY || '-' }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm tauri build --target universal-apple-darwin --bundles dmg --config src-tauri/tauri.bundle.conf.json --config src-tauri/tauri.macos.bundle.conf.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: macos
+          path: target/universal-apple-darwin/release/bundle/dmg/*.dmg
+
+  ios:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-apple-ios
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install -g pnpm@12.15.0
+      # The Xcode project is made here, from tauri.conf.json; Info.plist and Info.ios.plist are merged into it
+      # (microphone wording, background audio for calls, the home network).
+      - name: The Xcode project
+        working-directory: client
+        run: |
+          pnpm install --frozen-lockfile
+          [ -d src-tauri/gen/apple ] || pnpm tauri ios init --ci
+      - name: Signed, with a paid developer account
+        if: ${{ vars.APPLE_TEAM_ID != '' }}
+        working-directory: client
+        env:
+          APPLE_DEVELOPMENT_TEAM: ${{ vars.APPLE_TEAM_ID }}
+        run: pnpm tauri ios build --ci
+      # Without one: built with signing off and packed as an .ipa by hand. AltStore or Sideloadly re-sign it with the
+      # owner's free Apple ID when they put it on the phone.
+      - name: Unsigned, for AltStore or Sideloadly
+        if: ${{ vars.APPLE_TEAM_ID == '' }}
+        working-directory: client
+        run: |
+          set -e
+          pnpm build
+          project=$(ls -d src-tauri/gen/apple/*.xcodeproj | head -1)
+          scheme="$(basename "$project" .xcodeproj)_iOS"
+          xcodebuild -project "$project" -scheme "$scheme" -configuration release -sdk iphoneos -destination 'generic/platform=iOS' \
+            -derivedDataPath build/ios CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" build
+          app=$(ls -d build/ios/Build/Products/*-iphoneos/*.app | head -1)
+          mkdir -p build/ipa/Payload
+          cp -R "$app" build/ipa/Payload/
+          (cd build/ipa && zip -qry ../../src-tauri/gen/apple/HataVoice-unsigned.ipa Payload)
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ios
+          path: |
+            client/src-tauri/gen/apple/build/**/*.ipa
+            client/src-tauri/gen/apple/*.ipa

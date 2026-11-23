@@ -1,0 +1,68 @@
+/* Compact mode: smaller type and tighter cards, so noticeably more fits. */
+
+[data-compact="true"] {
+  --gap: 6px;
+  --control: 32px;
+  --top-bar: 46px;
+  --deck: 72px;
+  font-size: calc(13px * var(--scale) / 100);
+}
+
+[data-compact="true"] .overview {
+  padding: 24px 20px 90px;
+}
+
+[data-compact="true"] .lobby {
+  gap: 18px;
+}
+
+[data-compact="true"] .overview-title h1 {
+  font-size: clamp(20px, 2.4vw, 26px);
+}
+
+[data-compact="true"] .room-grid {
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+}
+
+[data-compact="true"] .room-card {
+  min-height: 132px;
+}
+
+[data-compact="true"] .room-card .room-enter {
+  padding: 13px 14px 12px;
+}
+
+[data-compact="true"] .room-name {
+  font-size: 14.5px;
+}
+
+[data-compact="true"] .room-person button {
+  width: 72px;
+}
+
+[data-compact="true"] .call-view {
+  padding: 0 8px 8px;
+}
+
+[data-compact="true"] .dock .dock-btn,
+[data-compact="true"] .mini-call .dock-btn {
+  width: 40px;
+  height: 40px;
+}
+
+[data-compact="true"] .dock-leave {
+  width: 48px;
+  height: 40px;
+}
+
+[data-compact="true"] .drawer {
+  width: 310px;
+}
+
+[data-compact="true"] .tile-main {
+  min-height: 110px;
+}
+
+[data-compact="true"] .msg.first {
+  margin-top: 8px;
+}

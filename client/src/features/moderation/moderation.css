@@ -1,0 +1,193 @@
+.person-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.person-name {
+  font-size: 1.07em;
+  font-weight: 600;
+}
+
+.person-activity {
+  font-size: 0.93em;
+  color: var(--muted);
+}
+
+.person-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.person-actions .btn {
+  justify-content: flex-start;
+  border-color: transparent;
+}
+
+.person-actions .btn-secondary:hover:not(:disabled) {
+  background: var(--hover);
+}
+
+.field.choice {
+  display: flex;
+  flex-flow: row wrap;
+  gap: 4px;
+  padding: 0;
+  border: 0;
+}
+
+.choice legend {
+  width: 100%;
+  margin-bottom: 5px;
+  padding: 0;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 10px;
+  font: inherit;
+  color: var(--text-2);
+  background: transparent;
+  border: 1px solid var(--wall-soft);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.chip:hover:not(:disabled) {
+  color: var(--text);
+  background: var(--hover);
+}
+
+.chip.selected {
+  color: var(--on-accent);
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.chip input {
+  position: absolute;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.chip:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
+.my-gifs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  margin-top: 8px;
+}
+
+.gif-chosen {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.gif-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.moderation-media {
+  max-width: 100%;
+  max-height: 96px;
+  border-radius: var(--radius-sm);
+}
+
+.kicked-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgb(0 0 0 / 70%);
+}
+
+.kicked-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  max-width: 500px;
+  padding: 24px;
+  text-align: center;
+  background: var(--panel);
+  border: 1px solid var(--wall-soft);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+}
+
+.kicked-card h1 {
+  font-size: 1.29em;
+}
+
+.kicked-media {
+  position: relative;
+}
+
+.kicked-media .moderation-media {
+  max-height: 280px;
+}
+
+.kicked-media .icon-btn {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+}
+
+.kicked-reason {
+  font-size: 1.07em;
+  overflow-wrap: anywhere;
+}
+
+.moderation-notice {
+  position: fixed;
+  right: 12px;
+  bottom: 72px;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 360px;
+  padding: 8px 10px;
+  background: var(--card);
+  border: 1px solid var(--wall-soft);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.moderation-notice .moderation-media {
+  max-width: 96px;
+  max-height: 64px;
+}
+
+.moderation-notice-text {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.mute-timer {
+  font-family: var(--font-mono);
+  color: var(--danger);
+}
+
+.user-card-status.muted {
+  color: var(--danger);
+  white-space: nowrap;
+}

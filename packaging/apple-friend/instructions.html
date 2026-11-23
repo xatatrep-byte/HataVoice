@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ХатаВойс на Mac и iPhone</title>
+<style>
+  :root {
+    --bg: #f6f4ef; --card: #ffffff; --text: #23211d; --muted: #6b665c; --line: #e2ddd2;
+    --accent: #2f6f5e; --warn-bg: #fff4dc; --warn-line: #e8c77a; --code-bg: #efece5;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1b1a18; --card: #24221f; --text: #ece8e0; --muted: #a39d91; --line: #3a3732;
+      --accent: #7fc4ae; --warn-bg: #3a3122; --warn-line: #7a6431; --code-bg: #2f2c28;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+  }
+  main { max-width: 760px; margin: 0 auto; padding: 32px 16px 64px; }
+  h1 { font-size: 30px; line-height: 1.2; margin: 0 0 8px; }
+  h2 { font-size: 21px; margin: 40px 0 12px; padding-top: 8px; border-top: 1px solid var(--line); }
+  h3 { font-size: 17px; margin: 24px 0 8px; }
+  p, li { max-width: 68ch; }
+  .lead { color: var(--muted); font-size: 17px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px 20px; margin: 16px 0; }
+  .warn { background: var(--warn-bg); border-color: var(--warn-line); }
+  ol, ul { padding-left: 24px; }
+  li { margin: 6px 0; }
+  code, kbd {
+    font: 14px/1.4 ui-monospace, "SF Mono", Menlo, monospace;
+    background: var(--code-bg); border-radius: 6px; padding: 1px 6px;
+  }
+  .path { color: var(--muted); }
+  strong { font-weight: 650; }
+  a { color: var(--accent); }
+</style>
+</head>
+<body>
+<main>
+  <h1>ХатаВойс на Mac и iPhone</h1>
+  <p class="lead">В архиве не готовая программа, а её исходный код и два файла, которые сами собирают её на этом
+    Маке: Apple разрешает собирать программы для Mac и iPhone только на Маке. Настраивать вручную ничего не нужно.
+    Первый раз уходит около часа, в основном на загрузки. Потом сборка идёт быстрее.</p>
+
+  <div class="card warn">
+    <strong>Это первая сборка ХатаВойс на Маке.</strong> Если что-то пойдёт не так, пришли тому, кто дал тебе архив,
+    файл <code>mac-build.log</code> или <code>iphone-build.log</code> из папки HataVoice. В них записано всё, что было
+    на экране.
+  </div>
+
+  <h2>Что понадобится</h2>
+  <ul>
+    <li>Mac с <strong>macOS 13 Ventura</strong> или новее, около <strong>15 ГБ</strong> свободного места и интернет.</li>
+    <li>Для iPhone ещё: <strong>Xcode</strong> из App Store (около 30 ГБ), твой обычный бесплатный <strong>Apple
+      ID</strong> и кабель для iPhone.</li>
+  </ul>
+
+  <h2>1. Распаковать</h2>
+  <p>Дважды щёлкни архив, появится папка <strong>HataVoice</strong>. Пусть она лежит в «Загрузках»: в пути к папке не
+    должно быть пробелов.</p>
+
+  <h2>2. ХатаВойс для Mac</h2>
+  <ol>
+    <li>Открой <strong>Терминал</strong>: <kbd>⌘ Пробел</kbd>, набери «Терминал», нажми <kbd>Enter</kbd>.</li>
+    <li>Напечатай в нём <code>bash</code> и пробел. Перетащи в окно Терминала файл <strong>«Собрать для
+      Mac.command»</strong> из папки HataVoice и нажми <kbd>Enter</kbd>.</li>
+    <li>Если Мак предложит поставить «инструменты разработчика», нажми «Установить», дождись конца и повтори шаг 2.</li>
+    <li>Жди. Когда всё соберётся, ХатаВойс откроется сам. Он будет лежать в «Программах», как обычная программа.</li>
+  </ol>
+  <h3>При первом запуске</h3>
+  <ul>
+    <li><strong>Микрофон.</strong> При первом звонке Мак спросит разрешение. Нажми «Разрешить».</li>
+    <li><strong>Говорить по клавише</strong> (push-to-talk). Мак попросит «Мониторинг ввода». Открой «Системные настройки →
+      Конфиденциальность и безопасность → Мониторинг ввода», включи там ХатаВойс и перезапусти его.</li>
+    <li><strong>Показ экрана.</strong> Мак попросит «Запись экрана». Там же, в «Конфиденциальности и безопасности»,
+      включи ХатаВойс и перезапусти его.</li>
+  </ul>
+  <p>Новая версия ставится так же: запусти «Собрать для Mac.command» ещё раз.</p>
+
+  <h2>3. ХатаВойс для iPhone</h2>
+  <h3>Подготовка (один раз)</h3>
+  <ol>
+    <li>Поставь <strong>Xcode</strong> из App Store и открой его. Если спросит, какие платформы скачать, отметь
+      <strong>iOS</strong>. Согласись с лицензией и дождись, пока он доустановит своё.</li>
+    <li>В Xcode: <strong>Xcode → Settings → Accounts</strong> (<kbd>⌘ ,</kbd>), нажми «+», выбери Apple ID и войди
+      своим Apple ID.</li>
+    <li>Там же выбери свой Apple ID → <strong>Manage Certificates…</strong> → «+» → <strong>Apple
+      Development</strong> → Done.</li>
+    <li>Подключи iPhone кабелем, разблокируй его и нажми «Доверять этому компьютеру».</li>
+    <li>Включи на iPhone <strong>режим разработчика</strong>: «Настройки → Конфиденциальность и безопасность → Режим
+      разработчика». iPhone перезагрузится, после этого нажми «Включить». Если такого пункта нет, открой в Xcode
+      <strong>Window → Devices and Simulators</strong> с подключённым iPhone, и пункт появится.</li>
+  </ol>
+  <h3>Сборка</h3>
+  <ol>
+    <li>В Терминале напечатай <code>bash</code> и пробел, перетащи файл <strong>«Собрать для iPhone.command»</strong>
+      и нажми <kbd>Enter</kbd>.</li>
+    <li>Если на Маке нет Homebrew, файл поставит его официальным установщиком с brew.sh. Тот спросит пароль от Мака
+      (символы при вводе не видны, так и должно быть) и попросит нажать <kbd>Enter</kbd>.</li>
+    <li>Жди. iPhone должен быть подключён и разблокирован. В конце на нём появится ХатаВойс.</li>
+    <li>При первом открытии iPhone напишет «Ненадёжный разработчик». Открой «Настройки → Основные → VPN и управление
+      устройством», выбери свой Apple ID и нажми «Доверять». Теперь ХатаВойс откроется.</li>
+  </ol>
+  <div class="card">
+    <strong>Раз в 7 дней.</strong> С бесплатным Apple ID Apple разрешает такую установку только на 7 дней, потом
+    программа перестаёт открываться. Тогда подключи iPhone и снова запусти «Собрать для iPhone.command». Это займёт
+    несколько минут, а вход и переписка сохранятся. <strong>Не удаляй</strong> ХатаВойс с iPhone, чтобы его обновить:
+    вместе с программой удалится и ключ, по которому тебя узнают на сервере.
+  </div>
+
+  <h2>4. Зайти на сервер</h2>
+  <ol>
+    <li>Попроси у владельца сервера <strong>ссылку-приглашение</strong>. Он делает её в настройках сервера, во вкладке
+      «Приглашения».</li>
+    <li>В ХатаВойс нажми <strong>«Зайти к другу»</strong>, вставь ссылку, нажми «Подключиться», а потом «Войти».</li>
+  </ol>
+  <p>На Маке стоит сохранить копию ключа: «Настройки → Профиль → Сохранить копию личности». С ней можно вернуть
+    себе вход, если с Маком что-то случится.</p>
+
+  <h2>Если что-то не так</h2>
+  <ul>
+    <li>Сборку можно запускать сколько угодно раз. То, что уже скачано, второй раз не скачивается.</li>
+    <li>Если сборка остановилась с ошибкой, пришли файл <code>mac-build.log</code> или <code>iphone-build.log</code>
+      из папки HataVoice. В них может быть твоя почта Apple ID (из имени сертификата), паролей там нет.</li>
+    <li>Папку HataVoice переноси только целиком: файлам сборки нужно всё, что лежит рядом с ними.</li>
+  </ul>
+
+  <h2>Чего на Mac и iPhone пока нет</h2>
+  <ul>
+    <li>Своего сервера: его можно сделать только в ХатаВойс для Windows. Заходить на чужие можно.</li>
+    <li>Студии записи и стримов: в движке Safari нет нужной ей функции.</li>
+    <li>Чужого управления этим Маком и виртуальных геймпадов.</li>
+    <li>На iPhone ещё нет push-to-talk по клавише и персонажей на рабочем столе.</li>
+  </ul>
+
+  <h2>Что это ставит на Мак</h2>
+  <ul>
+    <li><strong>Rust, Node.js и pnpm</strong> ставятся в скрытую папку <code class="path">HataVoice/src/.tools</code>,
+      в систему ничего не попадает. Удалишь папку HataVoice, и их не станет.</li>
+    <li><strong>Инструменты Apple</strong>: Command Line Tools или Xcode. Это системные инструменты от Apple.</li>
+    <li>Для iPhone ещё <strong>Homebrew</strong>, а через него xcodegen, cocoapods и libimobiledevice.</li>
+    <li>Сама программа подписана прямо на этом Маке, без сертификата Apple. Здесь она открывается как обычная. Если
+      скопировать её на другой Мак, тот её не пустит, поэтому для другого Мака собери её там же этим архивом.</li>
+  </ul>
+  <p>Удалить всё: перетащи ХатаВойс из «Программ» в корзину и удали папку HataVoice. Данные программы лежат в
+    <code class="path">~/Library/Application Support/com.hatavoice.app</code>.</p>
+</main>
+</body>
+</html>

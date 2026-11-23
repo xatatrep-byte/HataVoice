@@ -1,0 +1,756 @@
+.studio-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.studio-empty {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 0 40px;
+  color: rgb(255 255 255 / 55%);
+  text-align: center;
+  pointer-events: none;
+}
+
+.studio-section {
+  padding: 12px;
+  border-bottom: 1px solid var(--wall-soft);
+}
+
+.studio-section:last-child {
+  border-bottom: none;
+}
+
+.studio-section h2 {
+  margin-bottom: 10px;
+  font-size: 0.93em;
+}
+
+.studio-section .field {
+  margin-bottom: 10px;
+}
+
+.studio-section .settings-sub {
+  margin-top: 16px;
+}
+
+.studio-note {
+  padding: 12px;
+}
+
+.studio-color {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.studio-color input {
+  width: 28px;
+  height: 22px;
+  padding: 0;
+  background: none;
+  border: 1px solid var(--wall-soft);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.studio-size {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 10px;
+  color: var(--muted);
+}
+
+.studio-strip-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.studio-strip-head h2 {
+  margin: 0;
+}
+
+.studio-strip-head .icon-btn {
+  width: 24px;
+  height: 24px;
+}
+
+.studio-meter {
+  position: relative;
+  display: block;
+  height: 8px;
+  margin: 2px 0 10px;
+  overflow: hidden;
+  background: var(--quiet);
+}
+
+.studio-meter span {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, var(--ok) 0 70%, var(--warn) 70% 88%, var(--danger) 88%);
+}
+
+.studio-meter::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background: repeating-linear-gradient(90deg, transparent 0 3px, var(--panel) 3px 4px);
+}
+
+.studio-destinations {
+  display: flex;
+  flex-direction: column;
+  margin: 8px 0;
+  border: 1px solid var(--wall-soft);
+  border-radius: var(--radius-sm);
+}
+
+.studio-destination {
+  padding: 2px 10px;
+  border-bottom: 1px solid var(--wall-soft);
+}
+
+.studio-destination:last-child {
+  border-bottom: none;
+}
+
+.studio-destination.on {
+  padding-bottom: 10px;
+}
+
+.studio-destination .field {
+  margin: 6px 0 4px;
+}
+
+.studio-destination-state {
+  margin: 0 0 6px;
+  font-family: var(--font-mono);
+  font-size: 0.82em;
+  color: var(--warn);
+}
+
+.studio-destination-state.live {
+  color: var(--ok);
+}
+
+.studio-key-row {
+  display: flex;
+  gap: 4px;
+}
+
+/* Where the studio's files go: the whole path, and the last file by name. */
+.save-folder-path {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 2px 0 8px;
+  padding: 9px 11px;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  color: var(--text);
+  background: var(--hover);
+  border-radius: 10px;
+}
+
+.save-folder-path svg {
+  flex: none;
+  color: var(--muted);
+}
+
+.save-folder-path span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.save-folder-last {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+  font-size: 13px;
+}
+
+.save-folder-last svg {
+  flex: none;
+  color: var(--muted);
+}
+
+.save-folder-last-label {
+  color: var(--muted);
+}
+
+.save-folder-last-name {
+  min-width: 0;
+  overflow: hidden;
+  font-weight: 650;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* «Запись и стрим», laid out as OBS is: the preview on top, the docks under it, what is going on along the bottom. */
+.obs {
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+.obs-top {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 10px;
+  height: 46px;
+  padding: 0 8px 0 16px;
+  border-bottom: 1px solid var(--wall-soft);
+}
+
+.obs-top h1 {
+  font-size: 1em;
+}
+
+.obs-spacer {
+  flex: 1;
+}
+
+.obs-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 10px;
+  font-family: var(--font-mono);
+  font-size: 0.82em;
+  font-weight: 600;
+  line-height: 22px;
+  color: #fff;
+  background: var(--danger);
+  border-radius: 999px;
+}
+
+.obs-pill.rec {
+  background: color-mix(in srgb, var(--danger) 70%, #000);
+}
+
+.obs-pill svg {
+  animation: obs-blink 1.2s steps(2, jump-none) infinite;
+}
+
+@keyframes obs-blink {
+  50% {
+    opacity: 0.25;
+  }
+}
+
+.obs-scene-now {
+  font-size: 0.88em;
+  color: var(--muted);
+}
+
+.form-error.obs-error {
+  flex: none;
+  margin: 8px 10px 0;
+  padding: 7px 12px;
+  background: color-mix(in srgb, var(--danger) 12%, transparent);
+  border-radius: var(--radius-sm);
+}
+
+.obs-stage {
+  display: flex;
+  flex: 1;
+  gap: 8px;
+  min-height: 0;
+  padding: 10px 10px 0;
+}
+
+.obs-screen {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+.obs-screen-head {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 6px;
+  height: 26px;
+  font-size: 0.82em;
+  color: var(--muted);
+}
+
+.obs-screen-head b {
+  font-weight: 650;
+  color: var(--text);
+}
+
+.obs-screen-head.on-air {
+  color: var(--danger);
+}
+
+/* Two screens side by side: their names right over them. */
+.obs-stage.two .obs-frame {
+  align-items: flex-start;
+}
+
+.obs-stage.two .obs-take {
+  padding-bottom: 6%;
+}
+
+.obs-preview.program {
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--danger) 55%, transparent);
+}
+
+/* Studio mode: «Перевести» between the scene being prepared and the air. */
+.obs-take {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 112px;
+}
+
+.obs-take .hint {
+  margin: 0;
+  font-size: 0.76em;
+  text-align: center;
+}
+
+.obs-air {
+  flex: none;
+  margin-right: 4px;
+  padding: 0 6px;
+  font-size: 0.7em;
+  font-weight: 700;
+  line-height: 16px;
+  color: #fff;
+  background: var(--danger);
+  border-radius: 999px;
+}
+
+.obs-toggle.on {
+  color: var(--accent);
+  background: var(--selected);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 60%, transparent);
+}
+
+/* Fits a wide frame by its width and a tall one by its height. */
+.obs-frame {
+  container-type: size;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  min-height: 0;
+}
+
+.obs-preview {
+  position: relative;
+  width: min(100cqw, calc(100cqh * var(--frame-ratio)));
+  overflow: hidden;
+  background: #000;
+  box-shadow: 0 0 0 1px var(--wall-soft);
+  touch-action: none;
+}
+
+.obs-selection {
+  position: absolute;
+  pointer-events: none;
+  outline: 2px solid var(--danger);
+  outline-offset: -1px;
+}
+
+.obs-selection.locked {
+  outline: 1px dashed rgb(255 255 255 / 60%);
+}
+
+.obs-handle {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  margin: -5px 0 0 -5px;
+  background: #fff;
+  border: 2px solid var(--danger);
+  border-radius: 2px;
+}
+
+.obs-handle.h-nw { top: 0; left: 0; }
+.obs-handle.h-n { top: 0; left: 50%; }
+.obs-handle.h-ne { top: 0; left: 100%; }
+.obs-handle.h-e { top: 50%; left: 100%; }
+.obs-handle.h-se { top: 100%; left: 100%; }
+.obs-handle.h-s { top: 100%; left: 50%; }
+.obs-handle.h-sw { top: 100%; left: 0; }
+.obs-handle.h-w { top: 50%; left: 0; }
+
+.obs-properties {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  width: 340px;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--panel);
+  border: 1px solid var(--wall-soft);
+  border-radius: var(--radius-sm);
+}
+
+.obs-properties-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.obs-docks {
+  display: grid;
+  flex: none;
+  grid-template-columns: minmax(140px, 1fr) minmax(220px, 1.35fr) minmax(200px, 1.25fr) minmax(170px, 1fr) minmax(170px, 0.95fr);
+  gap: 6px;
+  height: clamp(210px, 32vh, 290px);
+  padding: 8px 10px;
+}
+
+.obs-dock {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--panel);
+  border: 1px solid var(--wall-soft);
+  border-radius: var(--radius-sm);
+}
+
+.obs-dock-head {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  height: 32px;
+  padding: 0 3px 0 10px;
+  font-size: 0.82em;
+  font-weight: 700;
+  color: var(--muted);
+  border-bottom: 1px solid var(--wall-soft);
+}
+
+.obs-dock-head > span:first-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.obs-dock-tools {
+  display: flex;
+  align-items: center;
+  gap: 1px;
+}
+
+.obs-dock-tools .icon-btn,
+.obs-item .icon-btn,
+.obs-quick .icon-btn,
+.obs-channel .icon-btn {
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+}
+
+.obs-list {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 1px;
+  min-height: 0;
+  margin: 0;
+  padding: 4px;
+  overflow-y: auto;
+  list-style: none;
+}
+
+.obs-item {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 1px;
+  width: 100%;
+  min-height: 30px;
+  padding: 0 3px 0 8px;
+  font: inherit;
+  color: var(--text);
+  text-align: left;
+  background: none;
+  border: none;
+  border-radius: 7px;
+  cursor: pointer;
+}
+
+.obs-item:hover {
+  background: var(--quiet);
+}
+
+.obs-item.on {
+  background: var(--selected);
+  box-shadow: inset 2px 0 0 var(--accent);
+}
+
+.obs-item-name {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+  min-height: 30px;
+  padding: 0;
+  overflow: hidden;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.obs-item-name > svg {
+  flex: none;
+  color: var(--muted);
+}
+
+.obs-key {
+  flex: none;
+  min-width: 18px;
+  margin-right: 4px;
+  padding: 0 4px;
+  font-family: var(--font-mono);
+  font-size: 0.72em;
+  line-height: 16px;
+  color: var(--muted);
+  text-align: center;
+  border: 1px solid var(--wall-soft);
+  border-radius: 4px;
+}
+
+.obs-rename {
+  flex: none;
+  min-height: 30px;
+}
+
+.obs-empty {
+  padding: 14px 10px;
+  font-size: 0.86em;
+  color: var(--muted);
+  text-align: center;
+}
+
+.obs-quick {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 1px;
+  padding: 3px 6px;
+  border-top: 1px solid var(--wall-soft);
+}
+
+.obs-quick .hint {
+  min-width: 0;
+  margin: 0 0 0 6px;
+  overflow: hidden;
+  font-size: 0.76em;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.obs-menu {
+  width: 230px;
+  border-radius: 14px;
+}
+
+.obs-dock-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 0;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+.obs-dock-body .field {
+  margin: 0;
+}
+
+.obs-channel {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.obs-channel-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.88em;
+  font-weight: 600;
+}
+
+.obs-channel-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.obs-db {
+  font-family: var(--font-mono);
+  font-size: 0.82em;
+  font-weight: 400;
+  color: var(--muted);
+}
+
+.obs-meter {
+  position: relative;
+  display: block;
+  height: 8px;
+  overflow: hidden;
+  background: var(--quiet);
+  border-radius: 2px;
+}
+
+.obs-meter span {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, var(--ok) 0 66%, var(--warn) 66% 86%, var(--danger) 86%);
+  transition: clip-path 60ms linear;
+}
+
+.obs-meter::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background: repeating-linear-gradient(90deg, transparent 0 3px, var(--panel) 3px 4px);
+}
+
+.obs-fader {
+  width: 100%;
+  height: 16px;
+  margin: 0;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.obs-controls {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 6px;
+  min-height: 0;
+  padding: 8px;
+  overflow-y: auto;
+}
+
+.obs-controls .btn {
+  justify-content: center;
+  width: 100%;
+}
+
+.obs-status {
+  display: flex;
+  flex: none;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 18px;
+  min-height: 26px;
+  padding: 0 16px;
+  font-family: var(--font-mono);
+  font-size: 0.8em;
+  color: var(--muted);
+  border-top: 1px solid var(--wall-soft);
+}
+
+.obs-stat b {
+  font-weight: 500;
+  color: var(--text);
+}
+
+.obs-stat.warn,
+.obs-stat.warn b {
+  color: var(--warn);
+}
+
+.modal:has(.obs-settings) {
+  width: min(620px, 100%);
+  height: min(760px, 100%);
+}
+
+/* The sections' names stay in sight while a long one scrolls. */
+.obs-settings .tabs {
+  position: sticky;
+  top: -2px;
+  z-index: 1;
+  margin: 0 -24px 4px;
+  padding: 0 12px;
+  background: var(--panel);
+}
+
+.obs-settings-body .studio-section {
+  padding: 12px 0;
+}
+
+/* A narrow window: the docks go two rows deep and scroll, the properties come over the preview. */
+@media (max-width: 1100px) {
+  .obs-docks {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-auto-rows: minmax(200px, 1fr);
+    height: 42vh;
+    overflow-y: auto;
+  }
+
+  .obs-stage {
+    position: relative;
+  }
+
+  .obs-properties {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    bottom: 0;
+    z-index: 5;
+    box-shadow: var(--shadow);
+  }
+}
+
+/* A stream that sends more than a chosen place takes. */
+.studio-note-warn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 10px;
+  padding: 8px 10px;
+  font-size: 0.88em;
+  color: var(--text);
+  background: color-mix(in srgb, var(--warn) 14%, transparent);
+  border-radius: var(--radius-sm);
+}
+
+.studio-note-warn .btn {
+  flex: none;
+}

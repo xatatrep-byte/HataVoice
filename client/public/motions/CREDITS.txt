@@ -1,0 +1,8 @@
+Motions in motions.bin
+
+- Universal Animation Library 1 and 2 (Standard) by Quaternius — CC0 1.0. https://quaternius.com
+- Bandai Namco Research Motion Dataset 1 and 2 — (c) 2022 Bandai Namco Research Inc., CC BY-NC 4.0
+  (https://creativecommons.org/licenses/by-nc/4.0/). https://github.com/BandaiNamcoResearchInc/Bandai-Namco-Research-Motiondataset
+  Used: bow (feminine, sad), byebye (happy), call (normal), guide (happy), respond (normal), bye (angry) from dataset 1;
+  raise-up-both-hands and wave-right-hand (youthful) from dataset 2. Changed: retargeted to the VRM humanoid skeleton,
+  trimmed to the gesture. Non-commercial use only: if HataVoice is ever sold, these takes must be replaced.

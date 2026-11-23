@@ -1,0 +1,7 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "overlay-arrange",
+  "description": "The characters on the desktop tell the main window where they were put, how big, when that is done, and the act chosen in a character's menu",
+  "windows": ["overlay"],
+  "permissions": ["core:event:allow-emit-to"]
+}

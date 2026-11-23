@@ -1,0 +1,10 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Android 12 and later show the icon while the app starts: the house on graphite, not on white. -->
+    <style name="Theme.hatavoice" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:windowBackground">@color/hv_window</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@color/hv_window</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowSplashScreenBackground">@color/hv_window</item>
+    </style>
+</resources>

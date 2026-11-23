@@ -1,0 +1,658 @@
+/* The frame of the window: a bar on top and the page under it. A call's panel floats over the page. */
+
+.shell {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+.page {
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+/* ------------------------------------------------------------------ The bar */
+
+.top-bar {
+  position: relative;
+  z-index: 20;
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 4px;
+  height: var(--top-bar);
+  padding-left: 10px;
+  user-select: none;
+}
+
+/* A Mac draws its own three window buttons over the left of the bar (tauri.macos.conf.json): the house starts after
+   them, and the bar keeps a little room on the right where our buttons would be. */
+.top-bar.mac {
+  padding-right: 10px;
+  padding-left: 84px;
+}
+
+.house-mark {
+  display: block;
+  flex: none;
+}
+
+.top-space {
+  flex: 1;
+  align-self: stretch;
+  min-width: 12px;
+}
+
+/* The mark and the name: home. */
+.top-home {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  max-width: 300px;
+  height: 38px;
+  padding: 0 10px 0 5px;
+  font: inherit;
+  color: var(--text);
+  background: transparent;
+  border: none;
+  border-radius: 11px;
+  cursor: pointer;
+  transition: background 120ms;
+}
+
+.top-home:hover {
+  background: var(--quiet);
+}
+
+.top-house {
+  min-width: 0;
+  overflow: hidden;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.house-menu,
+.me-menu {
+  position: relative;
+  display: flex;
+  flex: none;
+}
+
+.house-chevron {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 30px;
+  margin-left: -6px;
+  color: var(--muted);
+  background: transparent;
+  border: none;
+  border-radius: 9px;
+  cursor: pointer;
+  transition: background 120ms, color 120ms;
+}
+
+.house-chevron:hover,
+.house-chevron[aria-expanded="true"] {
+  color: var(--text);
+  background: var(--quiet);
+}
+
+.house-chevron .server-news {
+  position: absolute;
+  top: 3px;
+  right: 2px;
+  box-shadow: 0 0 0 2px var(--bg);
+}
+
+.top-sep {
+  flex: none;
+  width: 1px;
+  height: 20px;
+  margin: 0 8px 0 6px;
+  background: var(--wall-soft);
+}
+
+/* «Чаты»: the panel at the left. */
+.top-chats {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 8px;
+  height: 34px;
+  padding: 0 12px 0 10px;
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--muted);
+  background: transparent;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 120ms, color 120ms;
+}
+
+.top-chats:hover {
+  color: var(--text);
+  background: var(--quiet);
+}
+
+.top-chats.open {
+  color: var(--text);
+  background: var(--hover);
+}
+
+.top-count {
+  min-width: 19px;
+  height: 19px;
+  padding: 0 6px;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 19px;
+  color: var(--on-accent);
+  text-align: center;
+  background: var(--accent);
+  border-radius: 999px;
+}
+
+.top-count.mention {
+  color: #fff;
+  background: var(--danger);
+}
+
+/* Recording or streaming goes on. */
+.top-live {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 7px;
+  height: 28px;
+  margin-left: 6px;
+  padding: 0 11px 0 9px;
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 750;
+  color: var(--danger);
+  background: color-mix(in srgb, var(--danger) 13%, transparent);
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.top-live-lamp {
+  width: 7px;
+  height: 7px;
+  background: var(--danger);
+  border-radius: 50%;
+  animation: lamp 1.6s ease-in-out infinite;
+}
+
+@keyframes lamp {
+  50% {
+    opacity: 0.35;
+  }
+}
+
+.top-bar .top-search {
+  color: var(--muted);
+}
+
+.top-update {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  height: 32px;
+  margin-right: 6px;
+  padding: 0 13px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 750;
+  color: var(--on-accent);
+  white-space: nowrap;
+  background: var(--accent);
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.top-update:disabled {
+  cursor: progress;
+  opacity: 0.8;
+}
+
+.me-face {
+  display: flex;
+  margin: 0 4px 0 2px;
+  padding: 3px;
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.me-face .avatar {
+  box-shadow: 0 0 0 2px var(--bg), 0 0 0 3.5px color-mix(in srgb, var(--accent) 65%, transparent);
+}
+
+.me-face:hover .avatar,
+.me-face[aria-expanded="true"] .avatar {
+  box-shadow: 0 0 0 2px var(--bg), 0 0 0 3.5px var(--accent), 0 0 0 7px color-mix(in srgb, var(--accent) 16%, transparent);
+}
+
+.window-controls {
+  display: flex;
+  align-self: stretch;
+  margin-left: 4px;
+}
+
+.window-controls button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  color: var(--muted);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background 100ms, color 100ms;
+}
+
+.window-controls button:hover {
+  color: var(--text);
+  background: var(--quiet);
+}
+
+.window-controls .close:hover {
+  color: #fff;
+  background: #d8332a;
+}
+
+/* ------------------------------------------------------------------ Menus that drop from the bar */
+
+.menu-panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  width: 320px;
+  max-height: 75vh;
+  padding: 6px;
+  overflow-y: auto;
+  background: var(--card);
+  border: 1px solid var(--wall-soft);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+  animation: rise-in 140ms cubic-bezier(0.2, 0.9, 0.3, 1);
+}
+
+.house-panel {
+  left: -2px;
+}
+
+.me-panel {
+  right: 0;
+  left: auto;
+  width: 290px;
+}
+
+.menu-label {
+  margin: 6px 10px 4px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.menu-item,
+.house-item,
+.me-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 40px;
+  padding: 0 12px;
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--text);
+  text-align: left;
+  background: transparent;
+  border: none;
+  border-radius: 11px;
+  cursor: pointer;
+  transition: background 100ms;
+}
+
+.menu-item > svg {
+  flex: none;
+  color: var(--muted);
+}
+
+.menu-item:hover,
+.house-item:hover,
+.me-head:hover {
+  background: var(--quiet);
+}
+
+.menu-item.danger,
+.menu-item.danger > svg {
+  color: var(--danger);
+}
+
+.menu-item-text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.menu-item-text small {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.house-item {
+  min-height: 46px;
+  padding: 0 10px;
+}
+
+.house-item[aria-current="true"] {
+  background: var(--selected);
+}
+
+.me-head {
+  min-height: 60px;
+  padding: 8px 10px;
+}
+
+.me-head b {
+  overflow: hidden;
+  font-size: 15px;
+  font-weight: 800;
+  text-overflow: ellipsis;
+}
+
+.menu-sep {
+  height: 1px;
+  margin: 5px 8px;
+  background: var(--wall-soft);
+}
+
+.menu-kbd {
+  padding: 2px 7px;
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+  background: var(--quiet);
+  border-radius: 6px;
+}
+
+.menu-confirm {
+  padding: 8px 10px 4px;
+  font-weight: 600;
+}
+
+.menu-panel .modal-actions {
+  padding: 6px;
+}
+
+/* A switch drawn inside a menu row, for role="menuitemcheckbox". */
+.menu-switch {
+  position: relative;
+  flex: none;
+  width: 34px;
+  height: 20px;
+  background: var(--hover);
+  border: 1px solid var(--wall-soft);
+  border-radius: 999px;
+}
+
+.menu-switch::after {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  content: "";
+  background: var(--text-2);
+  border-radius: 50%;
+  transition: transform 140ms;
+}
+
+[aria-checked="true"] > .menu-switch {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+[aria-checked="true"] > .menu-switch::after {
+  background: var(--on-accent);
+  transform: translateX(14px);
+}
+
+.server-mark {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  font-size: 12px;
+  font-weight: 800;
+  color: #fff;
+  border-radius: 9px;
+}
+
+.server-news {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+}
+
+.panel-menu-count {
+  flex: none;
+  padding: 1px 7px;
+  font-size: 11.5px;
+  font-weight: 800;
+  color: #fff;
+  background: var(--danger);
+  border-radius: 999px;
+}
+
+/* ------------------------------------------------------------------ The palette */
+
+.palette-shade {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: flex;
+  justify-content: center;
+  padding: 11vh 20px 20px;
+  background: color-mix(in srgb, var(--bg) 62%, transparent);
+  backdrop-filter: blur(8px);
+  animation: fade-in 100ms ease-out;
+}
+
+.palette {
+  display: flex;
+  flex-direction: column;
+  width: min(620px, 100%);
+  max-height: 62vh;
+  overflow: hidden;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow);
+  animation: rise-in 140ms cubic-bezier(0.2, 0.9, 0.3, 1);
+}
+
+.palette-field {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 12px;
+  padding: 0 18px;
+  color: var(--muted);
+  border-bottom: 1px solid var(--border);
+}
+
+.palette-field input {
+  flex: 1;
+  height: 56px;
+  font: inherit;
+  font-size: 1.15em;
+  font-weight: 600;
+  color: var(--text);
+  background: transparent;
+  border: none;
+  outline: none;
+}
+
+.palette-list {
+  margin: 0;
+  padding: 8px;
+  overflow-y: auto;
+  list-style: none;
+}
+
+.palette-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 42px;
+  padding: 4px 12px;
+  font: inherit;
+  font-weight: 600;
+  color: var(--text);
+  text-align: left;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.palette-item.active {
+  background: var(--hover);
+}
+
+.palette-icon {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  color: var(--muted);
+}
+
+.palette-title {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.palette-none {
+  padding: 22px;
+  color: var(--muted);
+  text-align: center;
+}
+
+/* ------------------------------------------------------------------ Strips under the bar */
+
+.notice-strip {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  margin: 0 18px 8px;
+  padding: 4px 8px 4px 16px;
+  font-weight: 600;
+  background: color-mix(in srgb, var(--warn) 11%, var(--panel));
+  border: 1px solid color-mix(in srgb, var(--warn) 30%, transparent);
+  border-radius: var(--radius);
+}
+
+.notice-strip > span {
+  flex: 1;
+  min-width: 0;
+}
+
+.streamer-badge {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 4px 10px;
+  font-size: 0.86em;
+  font-weight: 700;
+  color: var(--on-accent);
+  background: var(--accent);
+}
+
+.streamer-badge .link-button {
+  color: inherit;
+}
+
+.empty-state {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 8px;
+  width: min(520px, 100%);
+  margin: 0 auto;
+  padding: 32px;
+}
+
+.empty-state h1 {
+  font-size: 28px;
+  font-weight: 800;
+}
+
+.empty-state p {
+  margin-bottom: 14px;
+  color: var(--text-2);
+}
+
+.empty-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* A narrow window has no room for words in the bar. */
+@media (max-width: 900px) {
+  .top-chats-word {
+    display: none;
+  }
+
+  .top-home {
+    max-width: 180px;
+  }
+}

@@ -1,0 +1,484 @@
+/* Settings are a page over the plan: tabs on top, one column of controls down the middle. */
+
+.settings {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+.settings-nav {
+  display: flex;
+  flex: none;
+  gap: 0;
+  padding: 0 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  border-bottom: 1px solid var(--wall-soft);
+}
+
+.settings-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.settings-tab {
+  position: relative;
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 5px;
+  min-height: 42px;
+  padding: 0 7px;
+  font: inherit;
+  font-weight: 500;
+  color: var(--muted);
+  white-space: nowrap;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 120ms;
+}
+
+.settings-tab svg {
+  flex: none;
+  stroke-width: 1.75;
+}
+
+.settings-tab:hover {
+  color: var(--text);
+}
+
+.settings-tab.active {
+  color: var(--text);
+}
+
+.settings-tab.active svg {
+  color: var(--accent);
+}
+
+.settings-tab.active::after {
+  position: absolute;
+  right: 7px;
+  bottom: -1px;
+  left: 7px;
+  height: 2px;
+  content: "";
+  background: var(--accent);
+}
+
+.settings-content {
+  flex: 1;
+  min-width: 0;
+  padding: 26px max(22px, calc((100% - 680px) / 2)) 34px;
+  overflow-y: auto;
+}
+
+/* On top the tabs take a second row when the window is too narrow for them, never running off its edge. */
+@media (min-width: 701px) {
+  .settings-nav {
+    flex-wrap: wrap;
+    overflow-x: visible;
+  }
+}
+
+/* Chosen in «Внешний вид», on a wide window: the sections down the left, the page beside them. */
+@media (min-width: 900px) {
+  .settings.side {
+    flex-direction: row;
+  }
+
+  .settings.side .settings-nav {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 2px;
+    width: 212px;
+    padding: 12px 10px 24px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    border-right: 1px solid var(--wall-soft);
+    border-bottom: none;
+  }
+
+  .settings.side .settings-tab {
+    min-height: 38px;
+    padding: 0 12px;
+    border-radius: var(--radius-sm);
+  }
+
+  .settings.side .settings-tab:hover {
+    background: var(--hover);
+  }
+
+  .settings.side .settings-tab.active {
+    background: var(--hover);
+  }
+
+  .settings.side .settings-tab.active::after {
+    top: 9px;
+    right: auto;
+    bottom: 9px;
+    left: 0;
+    width: 3px;
+    height: auto;
+    border-radius: 2px;
+  }
+
+  .settings.side .settings-content {
+    padding: 26px max(26px, calc((100% - 680px) / 2)) 34px;
+  }
+}
+
+.settings-title {
+  margin-bottom: 18px;
+  font-family: var(--font-display);
+  font-size: 1.6em;
+  font-weight: 500;
+  letter-spacing: -0.025em;
+}
+
+.settings-sub {
+  margin: 22px 0 10px;
+  padding-bottom: 5px;
+  font-size: 0.93em;
+  font-weight: 600;
+  color: var(--text);
+  border-bottom: 1px solid var(--wall-soft);
+}
+
+.field-row > .field {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.binding {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  min-height: var(--control);
+  padding: 0 9px;
+  font-family: var(--font-mono);
+  font-size: 0.93em;
+  background: var(--panel-2);
+  border: 1px solid var(--wall-soft);
+  border-radius: var(--radius-sm);
+}
+
+.binding.live {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.profile-preview {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding: 10px 12px;
+  border: 1px solid var(--wall-soft);
+  border-radius: var(--radius);
+}
+
+.profile-name {
+  font-size: 1.07em;
+  font-weight: 600;
+}
+
+/* ---------------------------------------------------------------- About */
+
+.about-name {
+  font-size: 1.43em;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.about-heading {
+  margin: 20px 0 8px;
+  font-size: 0.93em;
+}
+
+.about-release {
+  margin-bottom: 12px;
+}
+
+.about-release-head {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.93em;
+}
+
+.about-release ul {
+  margin: 4px 0 0;
+  padding-left: 16px;
+  line-height: 1.5;
+  color: var(--text-2);
+}
+
+.about-fact {
+  margin-bottom: 10px;
+  color: var(--text-2);
+}
+
+.about-fact b {
+  display: block;
+  font-weight: 500;
+  color: var(--text);
+}
+
+/* ---------------------------------------------------------------- First start */
+
+.onboarding {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 24px;
+  overflow-y: auto;
+  background:
+    radial-gradient(60% 56% at 50% 18%, var(--lamp) 0%, transparent 72%),
+    linear-gradient(var(--grid) 1px, transparent 1px) -1px -1px / 26px 26px,
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px) -1px -1px / 26px 26px,
+    var(--bg);
+}
+
+.onboarding-card {
+  width: min(480px, 100%);
+  padding: 30px 32px 28px;
+  background: color-mix(in srgb, var(--panel) 88%, transparent);
+  border: 3px solid var(--wall);
+  animation: rise-in 240ms cubic-bezier(0.2, 0.9, 0.3, 1);
+}
+
+.onboarding-card h1 {
+  margin-bottom: 6px;
+  font-family: var(--font-display);
+  font-size: 1.9em;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+}
+
+.onboarding-lead {
+  margin-bottom: 20px;
+  color: var(--text-2);
+}
+
+.onboarding-dots {
+  display: flex;
+  gap: 5px;
+  margin-bottom: 24px;
+}
+
+.onboarding-dots span {
+  width: 30px;
+  height: 3px;
+  background: var(--wall-soft);
+}
+
+.onboarding-dots span.done {
+  background: var(--accent);
+}
+
+.onboarding-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.onboarding-choices {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.onboarding-choices .btn {
+  justify-content: flex-start;
+  min-height: 44px;
+}
+
+.fingerprint {
+  font-family: var(--font-mono);
+  font-size: 1.07em;
+  letter-spacing: 0.06em;
+}
+
+.identity-form {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.custom-games {
+  margin: 4px 0 14px;
+}
+
+.custom-games-list {
+  margin: 0 0 8px;
+  padding: 0;
+  list-style: none;
+}
+
+.custom-games-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 3px 0;
+}
+
+/* ---------------------------------------------------------------- The character */
+
+.character-no3d {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  padding: 0 24px;
+  text-align: center;
+}
+
+.char-try {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  margin-bottom: 12px;
+}
+
+.char-try-button {
+  width: var(--control);
+  height: var(--control);
+  font-size: 16px;
+  background: transparent;
+  border: 1px solid var(--wall-soft);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.char-try-button:hover {
+  background: var(--hover);
+}
+
+.char-choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.char-choice {
+  min-height: 28px;
+  padding: 0 10px;
+  font: inherit;
+  color: var(--text-2);
+  background: transparent;
+  border: 1px solid var(--wall-soft);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.char-choice:hover {
+  color: var(--text);
+  background: var(--hover);
+}
+
+.char-choice.active {
+  color: var(--on-accent);
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+/* «Сеть»: the speed test. */
+.speed-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.speed-block .hint {
+  margin: 0;
+}
+
+.speed-result {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0;
+}
+
+.speed-result div {
+  min-width: 120px;
+  padding: 10px 14px;
+  background: var(--hover);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+
+.speed-result dt {
+  font-size: 12px;
+  color: var(--text-2);
+}
+
+.speed-result dd {
+  margin: 2px 0 0;
+  font-size: 20px;
+  font-weight: 750;
+}
+
+/* The internet's test points, a row each. */
+.speed-points {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
+.speed-point {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 14px;
+  padding: 10px 14px;
+  background: var(--hover);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+
+.speed-point-name {
+  flex: 1;
+  min-width: 180px;
+  font-weight: 650;
+}
+
+.speed-point-value {
+  color: var(--text-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.speed-point-value.strong {
+  font-size: 18px;
+  font-weight: 750;
+  color: var(--text);
+}
+
+.speed-point-error {
+  color: var(--danger);
+}
+
+.speed-vpn {
+  display: flex;
+  gap: 8px;
+  margin: 0;
+  padding: 10px 12px;
+  font-size: 0.92em;
+  line-height: 1.45;
+  background: color-mix(in srgb, var(--warn) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--warn) 40%, transparent);
+  border-radius: var(--radius-sm);
+}
+
+.speed-vpn svg {
+  flex: none;
+  margin-top: 2px;
+  color: var(--warn);
+}

@@ -1,0 +1,60 @@
+<!doctype html>
+<!--
+  The gallery's picture of a model (public/avatars/<id>.webp, 320 px, transparent), drawn by the app's own renderer:
+  `pnpm dev`, then /portrait-lab.html?id=mira&d=1.5&dy=0.05&happy=0.3 and `thumb()` in the console gives its data URL.
+  `d` how far the camera stands, `dy` how much above the head bone it looks, `happy` a little smile. Not part of the
+  app's build.
+-->
+<html>
+  <body style="margin: 0; background: #fff">
+    <canvas id="c" width="640" height="640" style="width: 320px; height: 320px"></canvas>
+    <canvas id="small" width="320" height="320"></canvas>
+    <script type="module">
+      import * as THREE from "three";
+      import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+      import { VRMLoaderPlugin, VRMUtils } from "@pixiv/three-vrm";
+
+      const params = new URLSearchParams(location.search);
+      const id = params.get("id") ?? "mira";
+      const canvas = document.getElementById("c");
+      const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, preserveDrawingBuffer: true });
+      renderer.setPixelRatio(1);
+      renderer.setSize(640, 640, false);
+      renderer.outputColorSpace = THREE.SRGBColorSpace;
+      renderer.toneMapping = THREE.NeutralToneMapping;
+      renderer.setClearColor(0xffffff, 0);
+      const scene = new THREE.Scene();
+      scene.add(new THREE.HemisphereLight(0xffffff, 0x7a7670, 1.0));
+      const key = new THREE.DirectionalLight(0xffffff, 1.7);
+      key.position.set(0.6, 1.4, 1.6);
+      scene.add(key);
+      const loader = new GLTFLoader();
+      loader.register((p) => new VRMLoaderPlugin(p));
+      const gltf = await loader.loadAsync(`/avatars/${id}.vrm`);
+      const vrm = gltf.userData.vrm;
+      VRMUtils.rotateVRM0(vrm);
+      scene.add(vrm.scene);
+      const h = vrm.humanoid;
+      h.getNormalizedBoneNode("leftUpperArm").rotation.z = -1.25;
+      h.getNormalizedBoneNode("rightUpperArm").rotation.z = 1.25;
+      const happy = Number(params.get("happy") ?? 0);
+      if (happy) vrm.expressionManager.setValue("happy", happy);
+      vrm.update(0);
+      vrm.scene.updateMatrixWorld(true);
+      const head = h.getRawBoneNode("head");
+      const hp = new THREE.Vector3().setFromMatrixPosition(head.matrixWorld);
+      const cam = new THREE.PerspectiveCamera(Number(params.get("fov") ?? 22), 1, 0.1, 20);
+      const dy = Number(params.get("dy") ?? 0.03);
+      const dist = Number(params.get("d") ?? 1.35);
+      cam.position.set(0, hp.y + dy + 0.06, dist);
+      cam.lookAt(0, hp.y + dy, 0);
+      renderer.render(scene, cam);
+      const small = document.getElementById("small");
+      const g = small.getContext("2d");
+      g.imageSmoothingQuality = "high";
+      g.drawImage(canvas, 0, 0, 320, 320);
+      window.thumb = () => small.toDataURL("image/webp", 0.9);
+      window.ready = true;
+    </script>
+  </body>
+</html>

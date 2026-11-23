@@ -1,0 +1,13 @@
+[package]
+name = "hv-crypto"
+description = "HataVoice end-to-end encryption: MLS groups for calls and the server chat, credentials tied to the identity key, call code"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+hv-roster = { path = "../hv-roster" }
+openmls = { version = "0.9.2", features = ["draft-ietf-mls-pq-ciphersuites"] }
+openmls_libcrux_crypto = { version = "0.4.0", features = ["draft-ietf-mls-pq-ciphersuites"] }
+openmls_basic_credential = "0.6"
+openmls_traits = { version = "0.6", features = ["draft-ietf-mls-pq-ciphersuites"] }

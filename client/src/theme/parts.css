@@ -1,0 +1,474 @@
+/* Pickers: color, theme, frame, voice. */
+
+.color-picker {
+  display: grid;
+  gap: 8px;
+  width: min(100%, 280px);
+  padding: 10px;
+  margin-top: 6px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.cp-square {
+  position: relative;
+  height: 160px;
+  background-image: linear-gradient(to top, #000, rgb(0 0 0 / 0)), linear-gradient(to right, #fff, rgb(255 255 255 / 0));
+  border-radius: var(--radius-sm);
+  cursor: crosshair;
+  touch-action: none;
+}
+
+.cp-hue {
+  position: relative;
+  height: 12px;
+  background: linear-gradient(to right, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00);
+  border-radius: 2px;
+  cursor: pointer;
+  touch-action: none;
+}
+
+.cp-thumb {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  pointer-events: none;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px rgb(0 0 0 / 50%);
+  transform: translate(-50%, -50%);
+}
+
+.cp-hue .cp-thumb {
+  top: 50%;
+  width: 6px;
+  height: 16px;
+  border-radius: 2px;
+}
+
+.cp-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cp-preview {
+  flex: none;
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+
+.cp-hex {
+  font-variant-numeric: tabular-nums;
+  text-transform: lowercase;
+}
+
+.cp-presets {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 4px;
+}
+
+.cp-preset {
+  aspect-ratio: 1;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.cp-preset.active {
+  outline: 1px solid var(--text);
+  outline-offset: 1px;
+}
+
+.theme-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(168px, 1fr));
+  gap: 10px;
+}
+
+.theme-card {
+  display: grid;
+  gap: 7px;
+  padding: 6px;
+  font: inherit;
+  color: var(--text);
+  text-align: left;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+
+.theme-card:hover {
+  border-color: color-mix(in srgb, var(--text) 26%, var(--border));
+}
+
+.theme-card.active {
+  border-color: var(--accent);
+  box-shadow: inset 0 0 0 1px var(--accent);
+}
+
+.theme-preview {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  height: 78px;
+  padding: 5px;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+}
+
+.theme-rooms {
+  display: grid;
+  flex: none;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3px;
+  height: 17px;
+}
+
+.theme-room {
+  display: flex;
+  align-items: center;
+  padding: 0 4px;
+  border: 1px solid;
+  border-radius: 4px;
+}
+
+.theme-preview-line {
+  display: block;
+  width: 60%;
+  height: 2.5px;
+  border-radius: 2px;
+  opacity: 0.85;
+}
+
+.theme-stage {
+  position: relative;
+  display: grid;
+  flex: 1;
+  grid-template-columns: 1fr 1fr;
+  gap: 3px;
+  padding: 3px 3px 10px;
+  border: 1px solid;
+  border-radius: 6px;
+}
+
+.theme-tile {
+  border-radius: 4px;
+}
+
+.theme-deck {
+  position: absolute;
+  bottom: 3px;
+  left: 50%;
+  display: flex;
+  gap: 2px;
+  padding: 2px 3px;
+  border-radius: 4px;
+  transform: translateX(-50%);
+}
+
+.theme-preview-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 2px;
+}
+
+.theme-name {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 2px 1px;
+  font-size: 0.93em;
+}
+
+.accent-row,
+.theme-code .row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.theme-code .row + .row {
+  margin-top: 6px;
+}
+
+.theme-code .input {
+  flex: 1;
+  min-width: 160px;
+}
+
+.own-theme {
+  display: grid;
+  gap: 8px;
+}
+
+.own-theme-parts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.own-part {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: var(--control);
+  padding: 0 8px 0 4px;
+  font: inherit;
+  color: var(--text);
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.own-part .cp-preview {
+  width: 20px;
+  height: 20px;
+  border-radius: 2px;
+}
+
+.own-part.active {
+  border-color: var(--accent);
+}
+
+.frame-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(88px, 1fr));
+  gap: 6px;
+}
+
+.frame-choice {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  padding: 14px 4px 8px;
+  font: inherit;
+  font-size: 0.86em;
+  color: var(--text);
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+
+.frame-choice:hover {
+  border-color: color-mix(in srgb, var(--text) 26%, var(--border));
+}
+
+.frame-choice.active {
+  border-color: var(--accent);
+  box-shadow: inset 0 0 0 1px var(--accent);
+}
+
+/* Voice presets read as a list of settings, not as a wall of pictures. */
+.voice-presets {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 2px;
+  margin: 6px 0 12px;
+}
+
+.voice-presets.compact {
+  grid-template-columns: repeat(3, 1fr);
+  margin: 0;
+}
+
+.voice-preset {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 30px;
+  padding: 0 8px;
+  overflow: hidden;
+  font: inherit;
+  color: var(--text-2);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.voice-preset:hover {
+  color: var(--text);
+  background: var(--hover);
+}
+
+.voice-preset.active {
+  color: var(--text);
+  background: var(--selected);
+  border-color: var(--accent);
+}
+
+.voice-emoji {
+  font-size: 1em;
+  line-height: 1;
+}
+
+.voice-custom {
+  display: grid;
+  gap: 2px;
+  padding: 12px;
+  margin-bottom: 8px;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.voice-custom .field {
+  margin-bottom: 8px;
+}
+
+.voice-custom .field-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.voice-menu {
+  position: absolute;
+  bottom: calc(100% + 18px);
+  left: 50%;
+  z-index: 30;
+  width: 400px;
+  max-width: calc(100vw - 32px);
+  padding: 8px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  transform: translateX(-50%);
+  animation: rise-in 140ms cubic-bezier(0.2, 0.9, 0.3, 1);
+}
+
+.voice-menu.emote-menu {
+  width: 340px;
+}
+
+img.voice-emoji {
+  flex: none;
+}
+
+
+/* ------------------------------------------------------------------ Theme cards: the program in miniature */
+
+.theme-mini {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border: 1px solid;
+  border-radius: 10px;
+}
+
+.tm-top {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 18%;
+  padding: 0 8%;
+  border-bottom: 1px solid;
+}
+
+.tm-logo {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+}
+
+.tm-title {
+  width: 34%;
+  height: 4px;
+  border-radius: 2px;
+  opacity: 0.85;
+}
+
+.tm-body {
+  display: grid;
+  flex: 1;
+  grid-template-columns: 30% 1fr;
+}
+
+.tm-side {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px 7px;
+  border-right: 1px solid;
+}
+
+.tm-item {
+  height: 5px;
+  border-radius: 3px;
+  opacity: 0.55;
+}
+
+.tm-item.on {
+  height: 11px;
+  opacity: 1;
+}
+
+.tm-main {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px;
+}
+
+.tm-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px;
+  border: 1px solid;
+  border-radius: 7px;
+}
+
+.tm-faces {
+  display: flex;
+}
+
+.tm-faces img {
+  width: 16px;
+  height: 16px;
+  margin-right: -5px;
+  object-fit: cover;
+  object-position: 50% 10%;
+  border: 1.5px solid;
+  border-radius: 50%;
+}
+
+.tm-btn {
+  width: 22px;
+  height: 10px;
+  border-radius: 4px;
+}
+
+.tm-line {
+  width: 72%;
+  height: 4px;
+  border-radius: 2px;
+  opacity: 0.14;
+}
+
+.tm-line.short {
+  width: 46%;
+}
+
+.theme-base {
+  margin-left: auto;
+  font-size: 0.85em;
+  font-weight: 600;
+  color: var(--muted);
+}

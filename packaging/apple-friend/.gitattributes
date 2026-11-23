@@ -1,0 +1,3 @@
+# bash on a Mac reads a carriage return as part of the command
+*.sh text eol=lf
+*.command text eol=lf

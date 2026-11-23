@@ -1,0 +1,48 @@
+diff --git a/dist/livekit-client.e2ee.worker.mjs b/dist/livekit-client.e2ee.worker.mjs
+index c074f6808fd5123a07c2276410f928663c5f91cf..a47d94690bb418d67a62b133b09ae6c074b03d14 100644
+--- a/dist/livekit-client.e2ee.worker.mjs
++++ b/dist/livekit-client.e2ee.worker.mjs
+@@ -7147,6 +7147,9 @@ class FrameCryptor extends BaseFrameCryptor {
+           var newData = new Uint8Array(frameHeader.byteLength + newDataWithoutHeader.byteLength);
+           newData.set(frameHeader);
+           newData.set(newDataWithoutHeader, frameHeader.byteLength);
++          if (frameInfo.av1) {
++            newData = globalThis.__hvAv1.wrap(new Uint8Array(encodedFrame.data), newData);
++          }
+           encodedFrame.data = newData.buffer;
+           this.appendFrameMetadata(encodedFrame);
+           return controller.enqueue(encodedFrame);
+@@ -7232,6 +7235,15 @@ class FrameCryptor extends BaseFrameCryptor {
+           return;
+         }
+       }
++      if (isVideoFrame(encodedFrame) && globalThis.__hvAv1 && this.getVideoCodec(encodedFrame) === 'av1') {
++        // HataVoice: the sealed AV1 frame comes in its OBU envelope.
++        const sealed = globalThis.__hvAv1.unwrap(new Uint8Array(encodedFrame.data));
++        if (!sealed) {
++          workerLogger.debug('AV1 frame without its envelope, dropping', this.logContext);
++          return;
++        }
++        encodedFrame.data = sealed.buffer;
++      }
+       const data = new Uint8Array(encodedFrame.data);
+       const keyIndex = data[encodedFrame.data.byteLength - 1];
+       if (this.keys.hasInvalidKeyAtIndex(keyIndex)) {
+@@ -7414,7 +7426,16 @@ class FrameCryptor extends BaseFrameCryptor {
+     }
+     // Check for unsupported codecs
+     if (detectedCodec === 'av1') {
+-      throw new Error("".concat(detectedCodec, " is not yet supported for end to end encryption"));
++      // HataVoice: AV1 is encrypted whole, then carried in an OBU envelope the RTP packer can cut (globalThis.__hvAv1,
++      // set by the app's worker; see client/src/voice/av1Envelope.ts).
++      if (!globalThis.__hvAv1) {
++        throw new Error("".concat(detectedCodec, " is not yet supported for end to end encryption"));
++      }
++      return {
++        unencryptedBytes: 0,
++        requiresNALUProcessing: false,
++        av1: true
++      };
+     }
+     // Handle VP8/VP9 codecs (no NALU processing needed)
+     if (detectedCodec === 'vp8') {

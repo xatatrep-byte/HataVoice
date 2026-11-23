@@ -1,0 +1,711 @@
+/*
+ * The photo editor, as photo editors look: dark and quiet so the photo is what one sees. A bar on top (cancel, history,
+ * zoom, done), the chosen tool's settings under it, the tools down the left, the photo in the middle on a checkerboard,
+ * the panels on the right.
+ */
+
+.photo-editor {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  display: flex;
+  flex-direction: column;
+  color: #e8eaee;
+  font-size: 13px;
+  background: #16181d;
+  user-select: none;
+}
+
+.photo-editor-note {
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  font-size: 15px;
+}
+
+.photo-top {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 12px;
+  height: 48px;
+  padding: 0 12px;
+  background: #1d2026;
+  border-bottom: 1px solid #2a2e36;
+}
+
+.photo-title {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  font-weight: 650;
+  color: #b9bfca;
+  text-align: center;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.photo-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.photo-sep {
+  width: 1px;
+  height: 22px;
+  margin: 0 6px;
+  background: #343944;
+}
+
+.photo-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 14px;
+  font: inherit;
+  font-weight: 650;
+  color: #e8eaee;
+  background: #2a2e36;
+  border: 1px solid #343944;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.photo-button:hover:not(:disabled) {
+  background: #333844;
+}
+
+.photo-button.primary {
+  color: var(--on-accent);
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.photo-button.primary:hover:not(:disabled) {
+  background: var(--accent-hover);
+}
+
+.photo-button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.photo-mini {
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  color: #c7ccd6;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  cursor: pointer;
+}
+
+.photo-mini:hover:not(:disabled) {
+  color: #fff;
+  background: #2c3039;
+}
+
+.photo-mini[aria-pressed="true"] {
+  color: var(--on-accent);
+  background: var(--accent);
+}
+
+.photo-mini:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.photo-mini.danger:hover {
+  color: #ff6b6b;
+}
+
+.photo-zoom {
+  min-width: 56px;
+  height: 28px;
+  font: inherit;
+  font-variant-numeric: tabular-nums;
+  color: #c7ccd6;
+  background: #23262d;
+  border: 1px solid #343944;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* The chosen tool's settings. */
+.photo-options {
+  display: flex;
+  flex: none;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  min-height: 44px;
+  padding: 6px 12px;
+  background: #1a1d22;
+  border-bottom: 1px solid #2a2e36;
+}
+
+.photo-options-name {
+  min-width: 96px;
+  font-weight: 750;
+  color: #fff;
+}
+
+.photo-options-end {
+  display: flex;
+  gap: 6px;
+  margin-left: auto;
+}
+
+.photo-chip {
+  height: 28px;
+  padding: 0 11px;
+  font: inherit;
+  color: #c7ccd6;
+  background: #23262d;
+  border: 1px solid #343944;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.photo-chip:hover:not(:disabled) {
+  color: #fff;
+  border-color: #4a505c;
+}
+
+.photo-chip[aria-pressed="true"],
+.photo-chip.primary {
+  color: var(--on-accent);
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.photo-chip.danger:hover {
+  color: #ff6b6b;
+  border-color: #ff6b6b;
+}
+
+.photo-chip:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.photo-range {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #b9bfca;
+}
+
+.photo-range input {
+  width: 110px;
+  accent-color: var(--accent);
+}
+
+.photo-range-value {
+  min-width: 48px;
+  font-variant-numeric: tabular-nums;
+  color: #e8eaee;
+}
+
+.photo-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #c7ccd6;
+  cursor: pointer;
+}
+
+.photo-check input {
+  accent-color: var(--accent);
+}
+
+.photo-select {
+  height: 28px;
+  padding: 0 8px;
+  font: inherit;
+  color: #e8eaee;
+  background: #23262d;
+  border: 1px solid #343944;
+  border-radius: 6px;
+}
+
+.photo-hint {
+  color: #8a91a0;
+}
+
+.photo-body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+/* The tools down the left. */
+.photo-tools {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 52px;
+  padding: 10px 0;
+  overflow-y: auto;
+  background: #1d2026;
+  border-right: 1px solid #2a2e36;
+}
+
+.photo-tool {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  color: #b9bfca;
+  background: transparent;
+  border: none;
+  border-radius: 9px;
+  cursor: pointer;
+}
+
+.photo-tool:hover {
+  color: #fff;
+  background: #2c3039;
+}
+
+.photo-tool[aria-pressed="true"] {
+  color: var(--on-accent);
+  background: var(--accent);
+}
+
+.photo-tools-color {
+  width: 26px;
+  height: 26px;
+  margin-top: 10px;
+  border: 2px solid #fff;
+  border-radius: 7px;
+  box-shadow: 0 0 0 1px #000;
+}
+
+/* The photo in the middle. */
+.photo-stage {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  background: #101216;
+  touch-action: none;
+}
+
+.photo-canvas {
+  position: absolute;
+  background-color: #fff;
+  background-image: linear-gradient(45deg, #ccc 25%, transparent 25%), linear-gradient(-45deg, #ccc 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #ccc 75%), linear-gradient(-45deg, transparent 75%, #ccc 75%);
+  background-position: 0 0, 0 8px, 8px -8px, -8px 0;
+  background-size: 16px 16px;
+  box-shadow: 0 8px 40px rgb(0 0 0 / 55%);
+  pointer-events: none;
+}
+
+.photo-overlay {
+  position: absolute;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.photo-selection-box {
+  fill: none;
+  stroke: var(--accent);
+}
+
+.photo-handle {
+  fill: #fff;
+  stroke: #1d2026;
+}
+
+.photo-handle.round {
+  fill: var(--accent);
+}
+
+.photo-crop-shade {
+  fill: rgb(0 0 0 / 55%);
+  fill-rule: evenodd;
+}
+
+.photo-crop-frame {
+  fill: none;
+  stroke: #fff;
+}
+
+.photo-crop-grid line {
+  stroke: rgb(255 255 255 / 45%);
+}
+
+.photo-ring {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  border: 1px solid rgb(255 255 255 / 90%);
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px rgb(0 0 0 / 60%);
+  opacity: 0;
+  translate: -50% -50%;
+}
+
+.photo-typing {
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  line-height: 1.25;
+  background: rgb(255 255 255 / 8%);
+  border: 1px dashed var(--accent);
+  outline: none;
+  resize: none;
+  overflow: hidden;
+  transform-origin: center;
+  white-space: pre;
+}
+
+/* The panels on the right. */
+.photo-side {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  width: 300px;
+  min-height: 0;
+  background: #1d2026;
+  border-left: 1px solid #2a2e36;
+}
+
+.photo-tabs {
+  display: flex;
+  flex: none;
+  flex-wrap: wrap;
+  gap: 2px;
+  padding: 8px 8px 0;
+  border-bottom: 1px solid #2a2e36;
+}
+
+.photo-tab {
+  padding: 7px 9px;
+  font: inherit;
+  font-weight: 650;
+  color: #8a91a0;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+}
+
+.photo-tab:hover {
+  color: #e8eaee;
+}
+
+.photo-tab[aria-selected="true"] {
+  color: #fff;
+  border-bottom-color: var(--accent);
+}
+
+.photo-panel-body,
+.photo-color {
+  flex: 1;
+  min-height: 0;
+  padding: 12px;
+  overflow-y: auto;
+}
+
+.photo-label {
+  margin: 12px 0 6px;
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: 0.04em;
+  color: #8a91a0;
+  text-transform: uppercase;
+}
+
+.photo-group:first-child .photo-label {
+  margin-top: 0;
+}
+
+.photo-slider {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-bottom: 8px;
+}
+
+.photo-slider-head {
+  display: flex;
+  justify-content: space-between;
+  color: #c7ccd6;
+}
+
+.photo-slider-value {
+  font-variant-numeric: tabular-nums;
+  color: #8a91a0;
+}
+
+.photo-slider input {
+  width: 100%;
+  accent-color: var(--accent);
+}
+
+.photo-text-button {
+  margin-top: 6px;
+  padding: 0;
+  font: inherit;
+  color: var(--accent);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.photo-text-button:disabled {
+  color: #5c6270;
+  cursor: default;
+}
+
+/* The colour. */
+.photo-color-square {
+  position: relative;
+  height: 170px;
+  border-radius: 8px;
+  background-image: linear-gradient(to top, #000, transparent), linear-gradient(to right, #fff, transparent);
+  cursor: crosshair;
+  touch-action: none;
+}
+
+.photo-color-square::before {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background: linear-gradient(to top, #000, transparent), linear-gradient(to right, #fff, rgb(255 255 255 / 0%));
+  border-radius: inherit;
+}
+
+.photo-color-knob {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px rgb(0 0 0 / 50%);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.photo-color-hue {
+  position: relative;
+  height: 14px;
+  margin: 12px 0;
+  border-radius: 7px;
+  background: linear-gradient(to right, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00);
+  cursor: pointer;
+  touch-action: none;
+}
+
+.photo-color-hue-knob {
+  position: absolute;
+  top: 50%;
+  width: 16px;
+  height: 16px;
+  background: transparent;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px rgb(0 0 0 / 50%);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.photo-color-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.photo-color-now {
+  flex: none;
+  width: 30px;
+  height: 30px;
+  border: 1px solid #4a505c;
+  border-radius: 7px;
+}
+
+.photo-color-code {
+  flex: 1;
+  min-height: 30px;
+  font-family: var(--font-mono);
+  color: #e8eaee;
+  background: #15171b;
+  border-color: #343944;
+}
+
+.photo-swatches {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  gap: 5px;
+}
+
+.photo-swatch {
+  aspect-ratio: 1;
+  padding: 0;
+  border: 1px solid rgb(255 255 255 / 15%);
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.photo-swatch[aria-pressed="true"] {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+/* Filters. */
+.photo-filters {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.photo-filter {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 3px;
+  font: inherit;
+  font-size: 11.5px;
+  color: #c7ccd6;
+  background: none;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.photo-filter img,
+.photo-filter-blank {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  background: #2a2e36;
+  border-radius: 5px;
+}
+
+.photo-filter[aria-pressed="true"] {
+  color: #fff;
+  border-color: var(--accent);
+}
+
+/* Layers. */
+.photo-layers {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0 0 10px;
+  padding: 0;
+  list-style: none;
+}
+
+.photo-layer {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding-right: 4px;
+  background: #23262d;
+  border: 1px solid transparent;
+  border-radius: 7px;
+}
+
+.photo-layer.chosen {
+  border-color: var(--accent);
+}
+
+.photo-layer-name {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  padding: 8px 10px;
+  font: inherit;
+  color: #e8eaee;
+  text-align: left;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.photo-layer-name span {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.photo-layer-base .photo-layer-name {
+  color: #8a91a0;
+  cursor: default;
+}
+
+.photo-layer-tools {
+  padding-top: 8px;
+  border-top: 1px solid #2a2e36;
+}
+
+/* Stickers. */
+.photo-stickers {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 4px;
+}
+
+.photo-sticker {
+  aspect-ratio: 1;
+  padding: 0;
+  font-family: "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", sans-serif;
+  font-size: 24px;
+  background: none;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.photo-sticker:hover {
+  background: #2c3039;
+}
+
+/* A phone: the panels under the photo, the tools along the bottom. */
+@media (max-width: 760px) {
+  .photo-body {
+    flex-direction: column;
+  }
+
+  .photo-tools {
+    flex-direction: row;
+    width: auto;
+    padding: 4px 8px;
+    overflow-x: auto;
+    border-right: none;
+    border-bottom: 1px solid #2a2e36;
+  }
+
+  .photo-tools-color {
+    margin: 0 0 0 8px;
+  }
+
+  .photo-side {
+    width: auto;
+    max-height: 38vh;
+    border-left: none;
+    border-top: 1px solid #2a2e36;
+  }
+
+  .photo-title {
+    display: none;
+  }
+}

@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>html, body { margin: 0; background: transparent; overflow: hidden; } svg { display: block; }</style>
+</head>
+<body>
+<script>
+// ?kind=desktop|fg|legacy|round|mono&size=N — one picture of the icon, the size of the window.
+const q = new URLSearchParams(location.search);
+const kind = q.get("kind");
+const size = Number(q.get("size"));
+const defs = `<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1c222d"/><stop offset="1" stop-color="#0b0d11"/></linearGradient>
+  <linearGradient id="mint" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6ff0b8"/><stop offset="1" stop-color="#22c9b0"/></linearGradient>
+  <radialGradient id="glow" cx="0.5" cy="0.42" r="0.55"><stop offset="0" stop-color="#45e3a2" stop-opacity="0.30"/><stop offset="1" stop-color="#45e3a2" stop-opacity="0"/></radialGradient>
+  <mask id="cut"><rect width="108" height="108" fill="#fff"/><g fill="#000">${bars()}</g></mask>
+</defs>`;
+function house(fill) {
+  return `<path d="M50.9 25.5 Q54 23 57.1 25.5 L83 46 Q85 47.6 85 50 V80 Q85 85 80 85 H28 Q23 85 23 80 V50 Q23 47.6 25 46 Z" fill="${fill}"/>`;
+}
+function bars() {
+  return `<rect x="35" y="59" width="6" height="12" rx="3"/><rect x="43" y="54" width="6" height="22" rx="3"/><rect x="51" y="50" width="6" height="30" rx="3"/><rect x="59" y="54" width="6" height="22" rx="3"/><rect x="67" y="59" width="6" height="12" rx="3"/>`;
+}
+const mark = `<circle cx="54" cy="56" r="40" fill="url(#glow)"/>${house("url(#mint)")}<g fill="#0f1319">${bars()}</g>`;
+// The mark at `scale` around the middle.
+const at = (scale, inner) => `<g transform="translate(54 54) scale(${scale}) translate(-54 -54)">${inner}</g>`;
+let body = "";
+if (kind === "desktop") body = `<rect x="2" y="2" width="104" height="104" rx="26" fill="url(#bg)"/><rect x="2.5" y="2.5" width="103" height="103" rx="25.5" fill="none" stroke="#fff" stroke-opacity="0.06"/>${mark}`;
+// Android's foreground layer: the visible circle is the middle 72 of 108, the safe one 66.
+if (kind === "fg") body = at(0.74, mark);
+if (kind === "mono") body = at(0.74, `<g mask="url(#cut)">${house("#fff")}</g>`);
+// Before Android 8: whole pictures, square and round.
+if (kind === "legacy") body = `<rect x="6" y="6" width="96" height="96" rx="22" fill="url(#bg)"/>${at(0.86, mark)}`;
+if (kind === "round") body = `<circle cx="54" cy="54" r="48" fill="url(#bg)"/>${at(0.8, mark)}`;
+document.body.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 108 108">${defs}${body}</svg>`;
+</script>
+</body>
+</html>
