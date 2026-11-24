@@ -80,7 +80,7 @@ pnpm tauri dev
 
 ХатаВойс бесплатный и без рекламы. Если он тебе нравится, можно поддержать разработку:
 
-- **DonationAlerts:** https://www.donationalerts.com/
+- **DonationAlerts:** https://www.donationalerts.com/r/trpxt
 
 | Сеть | Адрес |
 |---|---|
